@@ -309,6 +309,8 @@ def GenericCurlConfig(verbose=False, use_signal=False,
       if capath:
         raise Error("cURL linked against GnuTLS has no support for a"
                     " CA path (%s)" % (pycurl.version, ))
+    elif lcsslver.startswith("libressl/"):
+        pass
     else:
       raise NotImplementedError("cURL uses unsupported SSL version '%s'" %
                                 sslver)
