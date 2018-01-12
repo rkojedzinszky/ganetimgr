@@ -34,7 +34,7 @@ if __name__ == '__main__':
         sys.exit(1)
 
 
-def request_novnc_forwarding(server, daddr, dport, password, sport=None, tls=True):
+def request_novnc_forwarding(server, daddr, dport, password, sport=None, tls=True, auth_user='', auth_password=''):
     """
     Ask TVAP/VNCAP for a forwarding port.
 
@@ -52,28 +52,27 @@ def request_novnc_forwarding(server, daddr, dport, password, sport=None, tls=Tru
             return False
 
         request = {
-            "daddr": daddr,
-            "dport": dport,
+            "auth_user": auth_user,
+            "auth_password": auth_password,
+            "source_port": sport or 0,
+            "destination_address": daddr,
+            "destination_port": dport,
             "password": password,
-            "ws": True,
-            "tls": tls,
+            "type": "vnc-wss" if tls else "vnc-ws",
         }
-
-        if sport:
-            request["sport"] = sport
 
         request = json.dumps(request)
 
         ctrl = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         ctrl.connect((host, port))
         ctrl.send("%s\r\n" % request)
-        response = ctrl.recv(1024).strip()
+        response = json.loads(ctrl.recv(1024).strip())
         ctrl.close()
 
-        if response.startswith("FAIL"):
+        if response['status'] != 'OK':
             return False
         else:
-            return response
+            return response['source_port']
 
     # XXX bare except
     except:
