@@ -858,7 +858,9 @@ class Cluster(models.Model):
             node_ip,
             port,
             password,
-            sport=sport, tls=tls
+            sport=sport, tls=tls,
+            auth_user=settings.NOVNC_PROXY_AUTH_USER,
+            auth_password=settings.NOVNC_PROXY_AUTH_PASSWORD,
         )
         return proxy_server[0], int(res), password
 
