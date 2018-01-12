@@ -7,7 +7,7 @@ django-registration-redux==1.6
 # used for our registration workflow
 paramiko==1.12.1
 # used for user SSH key management
-python-daemon==1.5.5
+python-daemon==2.1.2
 # used by watcher
 setproctitle==1.0.1
 # used by watcher to set it's process name
