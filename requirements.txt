@@ -5,7 +5,7 @@ gevent
 # gevent is used to pool cluster RAPI communication
 django-registration-redux==2.4
 # used for our registration workflow
-paramiko==2.0.0
+paramiko
 # used for user SSH key management
 python-daemon==2.1.2
 # used by watcher
