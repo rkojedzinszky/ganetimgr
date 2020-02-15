@@ -391,3 +391,11 @@ if SENTRY['activate']:
         'class': 'raven.contrib.django.handlers.SentryHandler'
     }
     LOGGING['loggers']['django.request']['handlers'] = ['sentry']
+
+#########################
+#                       #
+#      Recaptcha        #
+#                       #
+#########################
+NORECAPTCHA_SITE_KEY = ''
+NORECAPTCHA_SECRET_KEY = ''
