@@ -28,3 +28,5 @@ django-redis-cache==2.1.0
 pyyaml==5.3
 # used by beanstalkc
 django-jsonfield==1.0.1
+# needed for rkojedzinszky/go-novncauthproxy proxy
+jwcrypto==0.6.0

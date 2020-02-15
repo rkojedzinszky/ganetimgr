@@ -218,6 +218,16 @@ WEBSOCK_VNC_ENABLED = True
 NOVNC_PROXY = "vnc.proxy.com:8888"
 NOVNC_USE_TLS = True
 
+# Define these to use github.com/rkojedzinszky/go-novncauthproxy as a vnc proxy
+# NOVNC_JWE_SECRET: base64 encoded form of a 32 byte key
+NOVNC_JWE_SECRET = None
+# Expiry time of the generated token
+NOVNC_JWE_TOKEN_EXPIRY = 5
+# Base URI for the token
+NOVNC_PROXY_BASE = "novnc/"
+# Set this if servers use password authentication
+NOVNC_JWE_SERVER_PASSWORD = ''
+
 # Legacy VNC refers to the Java applet console.
 # We consider this deprecated so from now on will default to off.
 LEGACY_VNC_ENABLED = False

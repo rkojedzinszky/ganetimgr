@@ -70,6 +70,7 @@
 						host = data[0];
 						port = data[1];
 						password = data[2];
+						path = data[3];
 					}
 				});
 				// if (!show_errors()) return false;
@@ -82,7 +83,7 @@
 					'shared' : true,
 					'updateState' : updateState,
 				});
-				rfb.connect(host, port, password);
+				rfb.connect(host, port, password, path);
 				return false;
 			}
 

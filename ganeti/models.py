@@ -23,7 +23,7 @@ import ipaddr
 from datetime import datetime, timedelta
 from gevent.pool import Pool
 from socket import gethostbyname
-from time import sleep
+from time import sleep, time
 from django.db import models
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
@@ -39,6 +39,7 @@ from util import vapclient
 from util.client import GanetiRapiClient, GanetiApiError, GenericCurlConfig
 from apply.models import Organization, InstanceApplication
 from distutils.version import LooseVersion
+from jwcrypto import jwt, jwk
 
 GANETI_TAG_PREFIX = settings.GANETI_TAG_PREFIX
 GANETI_VERSION_OSPARAMS = "2.16.0"
@@ -808,6 +809,9 @@ class Cluster(models.Model):
         return (res["source_port"], password)
 
     def setup_novnc_forwarding(self, instance, sport=0, tls=False):
+        if settings.NOVNC_JWE_SECRET:
+            return self.setup_novnc_forwarding_jwe(instance)
+
         password = User.objects.make_random_password(length=8)
         info = self.get_instance_info(instance)
         port = info['network_port']
@@ -824,6 +828,25 @@ class Cluster(models.Model):
             auth_password=settings.NOVNC_PROXY_AUTH_PASSWORD,
         )
         return proxy_server[0], int(res), password
+
+    def setup_novnc_forwarding_jwe(self, instance):
+        info = self.get_instance_info(instance)
+
+        claims = {
+            'vnc': {
+                'a': "{}:{}".format(info['pnode'], info['network_port']),
+                'p': settings.NOVNC_JWE_SERVER_PASSWORD,
+            },
+            'exp': int(time() + settings.NOVNC_JWE_TOKEN_EXPIRY),
+        }
+
+        key = jwk.JWK(kty="oct", k=settings.NOVNC_JWE_SECRET)
+        token = jwt.JWT(claims=claims, header={"alg":"A256KW", "enc":"A256CBC-HS512"})
+        token.make_encrypted_token(key)
+
+        host, port = settings.NOVNC_PROXY.split(':')
+
+        return host, port, '', settings.NOVNC_PROXY_BASE + token.serialize()
 
     def shutdown_instance(self, instance):
         cache_key = self._instance_cache_key(instance)
