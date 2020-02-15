@@ -9,3 +9,5 @@ django_markdown/
 .coverage
 analytics.html
 *.swp
+venv
+.vscode
