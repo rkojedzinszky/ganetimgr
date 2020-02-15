@@ -86,7 +86,7 @@ class GroupedModelChoiceField(ModelChoiceField):
 class GroupedModelChoiceIterator(ModelChoiceIterator):
     def __iter__(self):
         if self.field.empty_label is not None:
-            yield (u"", self.field.empty_label)
+            yield ("", self.field.empty_label)
         if self.field.cache_choices:
             if self.field.choice_cache is None:
                 self.field.choice_cache = [
@@ -132,15 +132,15 @@ class SelectWithDisabled(Select):
     def render_option(self, selected_choices, option_value, option_label):
         option_value = force_unicode(option_value)
         if (option_value in selected_choices):
-            selected_html = u' selected="selected"'
+            selected_html = ' selected="selected"'
         else:
             selected_html = ''
         disabled_html = ''
         if isinstance(option_label, dict):
             if dict.get(option_label, 'disabled'):
-                disabled_html = u' disabled="disabled"'
+                disabled_html = ' disabled="disabled"'
             option_label = option_label['label']
-        return u'<option value="%s"%s%s>%s</option>' % (
+        return '<option value="%s"%s%s>%s</option>' % (
             escape(option_value), selected_html, disabled_html,
             conditional_escape(force_unicode(option_label)))
 

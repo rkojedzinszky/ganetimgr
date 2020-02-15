@@ -214,7 +214,7 @@ def generate_json(instance, user, locked_nodes):
                 del inst_dict['name_href']
             except KeyError:
                 pass
-    if 'cdrom_image_path' in i.hvparams.keys():
+    if 'cdrom_image_path' in i.hvparams:
         if i.hvparams['cdrom_image_path'] and i.hvparams['boot_order'] == 'cdrom':
             inst_dict['cdrom'] = True
     inst_dict['nic_macs'] = ', '.join(i.nic_macs)
@@ -370,25 +370,20 @@ def notifyuseradvancedactions(
 
 
 def find_links(response):
-    return map(lambda link: link.get("href"),
-               filter(lambda x: re.search(r"(?<==[\"|\']).*(?=[\"|\']>)",
-                                          str(x)),
-                      BeautifulSoup(response.text).findAll("a")))
+    return [link.get("href") for link in [x for x in BeautifulSoup(response.text).findAll("a") if re.search(r"(?<==[\"|\']).*(?=[\"|\']>)",
+                                          str(x))]]
 
 
 def find_image_meta_links(url):
     def get_meta_links():
         try:
-            return filter(
-                lambda x: re.search(r"(?=" + IMG_META_SFX + r").*", x),
-                find_links(requests.get(url)))
+            return [x for x in find_links(requests.get(url)) if re.search(r"(?=" + IMG_META_SFX + r").*", x)]
         except RequestException:
             return ()
 
-    return map(lambda link: "{schema}{link}"
+    return ["{schema}{link}"
                             .format(schema=url if url not in link else "",
-                                    link=link),
-               get_meta_links())
+                                    link=link) for link in get_meta_links()]
 
 
 def meta_info_to_json(meta_link):
@@ -402,14 +397,13 @@ def craft_images_structure(meta_links):
     def craft_image_struct(temp_struct):
         return temp_struct.get("osparams", {}).get("img_id"), temp_struct
 
-    return filter(lambda (img, _): img is not None,
-                  map(craft_image_struct,
-                      filter(lambda x: x, map(meta_info_to_json, meta_links))))
+    return [img__ for img__ in map(craft_image_struct,
+                      [x for x in map(meta_info_to_json, meta_links) if x]) if img__[0] is not None]
 
 
 def discover_images():
-    return tuple(*map(craft_images_structure,
-                      map(find_image_meta_links, IMAGES_URL)))
+    return tuple(*list(map(craft_images_structure,
+                      list(map(find_image_meta_links, IMAGES_URL)))))
 
 
 def operating_systems():
@@ -419,7 +413,7 @@ def operating_systems():
             {'status': 'success',
              # sort so that "no-operating" system is shown first
              'operating_systems': sorted(
-                 discover_images(), key=lambda (path, struct): path != "none")}
+                 discover_images(), key=lambda path_struct: path_struct[0] != "none")}
         )
 
         cache.set('operating_systems', response, timeout=86400)

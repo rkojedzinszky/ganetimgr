@@ -16,7 +16,7 @@
 #
 
 from django.contrib import admin
-from models import Cluster, Network, InstanceAction
+from .models import Cluster, Network, InstanceAction
 
 
 def enable(modeladmin, request, queryset):

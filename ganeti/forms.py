@@ -16,7 +16,7 @@
 #
 import socket
 import re
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
@@ -154,7 +154,7 @@ class InstanceConfigForm(forms.Form):
                 oldtimeout = socket.getdefaulttimeout()
                 socket.setdefaulttimeout(5)
                 try:
-                    urllib2.urlopen(data)
+                    urllib.request.urlopen(data)
                     socket.setdefaulttimeout(oldtimeout)
                 except ValueError:
                     socket.setdefaulttimeout(oldtimeout)

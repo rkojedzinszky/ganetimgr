@@ -17,12 +17,12 @@
 import json
 
 # proxies
-from graphs import *
-from instances import *
-from jobs import *
-from clusters import *
-from discovery import *
-from nodegroup import *
+from .graphs import *
+from .instances import *
+from .jobs import *
+from .clusters import *
+from .discovery import *
+from .nodegroup import *
 
 from ganeti.utils import prepare_tags
 from django.core.cache import cache

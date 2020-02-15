@@ -36,15 +36,15 @@
 import logging
 import json
 import socket
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import threading
 import pycurl
 import time
 
 try:
-  from cStringIO import StringIO
+  from io import StringIO
 except ImportError:
-  from StringIO import StringIO
+  from io import StringIO
 
 
 GANETI_RAPI_PORT = 5080
@@ -499,7 +499,7 @@ class GanetiRapiClient(object): # pylint: disable=R0904
     urlparts = [self._base_url, path]
     if query:
       urlparts.append("?")
-      urlparts.append(urllib.urlencode(self._EncodeQuery(query)))
+      urlparts.append(urllib.parse.urlencode(self._EncodeQuery(query)))
 
     url = "".join(urlparts)
 
@@ -519,7 +519,7 @@ class GanetiRapiClient(object): # pylint: disable=R0904
       # Send request and wait for response
       try:
         curl.perform()
-      except pycurl.error, err:
+      except pycurl.error as err:
         if err.args[0] in _CURL_SSL_CERT_ERRORS:
           raise CertificateError("SSL certificate error %s" % err,
                                  code=err.args[0])
@@ -572,7 +572,7 @@ class GanetiRapiClient(object): # pylint: disable=R0904
     try:
       return self._SendRequest(HTTP_GET, "/%s/features" % GANETI_RAPI_VERSION,
                                None, None)
-    except GanetiApiError, err:
+    except GanetiApiError as err:
       # Older RAPI servers don't support this resource
       if err.code == HTTP_NOT_FOUND:
         return []
@@ -731,12 +731,12 @@ class GanetiRapiClient(object): # pylint: disable=R0904
     @note: This is an inplace update of base
 
     """
-    conflicts = set(kwargs.iterkeys()) & set(base.iterkeys())
+    conflicts = set(kwargs.keys()) & set(base.keys())
     if conflicts:
       raise GanetiApiError("Required fields can not be specified as"
                            " keywords: %s" % ", ".join(conflicts))
 
-    base.update((key, value) for key, value in kwargs.iteritems()
+    base.update((key, value) for key, value in kwargs.items()
                 if key != "dry_run")
 
   def InstanceAllocation(self, mode, name, disk_template, disks, nics,

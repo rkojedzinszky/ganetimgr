@@ -1,2 +1,2 @@
-from application import *
-from user import *
+from .application import *
+from .user import *

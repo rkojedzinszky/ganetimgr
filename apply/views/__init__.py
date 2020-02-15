@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from cStringIO import StringIO
+from io import StringIO
 from django import forms
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.sites.models import Site
@@ -53,7 +53,7 @@ from apply.models import (
 )
 
 # import views files
-from user import *
+from .user import *
 
 
 @login_required
@@ -212,7 +212,7 @@ def review_application(request, application_id=None):
                 'operating_system': app.operating_system
             }
         )
-        if app.instance_params and 'cluster' in app.instance_params.keys():
+        if app.instance_params and 'cluster' in app.instance_params:
             form = InstanceApplicationReviewForm(
                 instance=app,
                 initial={

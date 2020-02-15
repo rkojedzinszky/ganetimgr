@@ -421,7 +421,7 @@ class Cluster(models.Model):
     def get_instance_or_404(self, name):
         try:
             return self.get_instance(name)
-        except GanetiApiError, err:
+        except GanetiApiError as err:
             if err.code == 404:
                 raise Http404()
             else:
@@ -885,14 +885,14 @@ class Cluster(models.Model):
                             "contents": ssh_base64,
                             "owner": owner,
                             "group": group,
-                            "mode": 0600,
+                            "mode": 0o600,
                         })
             osparams.update(details.get('osparams'))
             reinstall_params = {}
-            for (key, val) in osparams.iteritems():
+            for (key, val) in osparams.items():
             # Encode nested JSON. See
             # <https://code.google.com/p/ganeti/issues/detail?id=835>
-                if not isinstance(val, basestring):
+                if not isinstance(val, str):
                     osparams[key] = json.dumps(val)
             reinstall_params['os'] = details.get('provider')
             reinstall_params['osparams'] = osparams
@@ -1189,7 +1189,7 @@ class InstanceAction(models.Model):
     last_updated = models.DateTimeField(auto_now=True)
     operating_system = models.CharField(max_length=255, null=True)
 
-    ACTIVATED = u"ALREADY_ACTIVATED"
+    ACTIVATED = "ALREADY_ACTIVATED"
     objects = InstanceActionManager()
 
     def activation_key_expired(self):
@@ -1274,9 +1274,7 @@ def tag_prefix_resolver(instance_struct, tag_prefix, association_data):
     def associate_data_with_tag(tag):
         return association_data.get(tag.replace(tag_prefix, ""))
 
-    return filter(lambda x: x is not None,
-                  map(associate_data_with_tag,
-                      filter(tag_prefix_matcher,
-                             instance_struct.get("tags", tuple()))
-                      )
-                  )
+    return [x for x in map(associate_data_with_tag,
+                      list(filter(tag_prefix_matcher,
+                             instance_struct.get("tags", tuple())))
+                      ) if x is not None]

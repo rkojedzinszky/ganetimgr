@@ -158,8 +158,7 @@ def get_user_group_list(request):
                     groupd['type'] = "group"
                     ret_list.append(groupd)
             elif type_of_search == 'instances':
-                for iname, _ in filter(lambda (name, inst): q_params in name,
-                                       get_all_instances().items()):
+                for iname, _ in [name_inst for name_inst in get_all_instances().items() if q_params in name_inst[0]]:
                     instd = {'text': iname,
                              'id': "i_%s" % iname, 'type': "vm"}
                     ret_list.append(instd)

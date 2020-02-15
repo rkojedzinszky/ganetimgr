@@ -34,6 +34,6 @@ class AuditEntry(models.Model):
         return "%s %s %s" % (self.requester, self.action, self.instance)
 
     def update(self, **kwargs):
-        for k, v in kwargs.iteritems():
+        for k, v in kwargs.items():
             setattr(self, k, v)
         self.save()

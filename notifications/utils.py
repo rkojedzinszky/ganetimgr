@@ -28,8 +28,7 @@ def get_all_instances():
     return (cache.get("all:instances")
             or
             {y.get("name", ""): y
-             for y in chain(*map(lambda x: x.get_client_struct_instances(),
-                                 Cluster.objects.filter(disabled=False)))}
+             for y in chain(*[x.get_client_struct_instances() for x in Cluster.objects.filter(disabled=False)])}
             )
 
 

@@ -22,15 +22,15 @@ audit_entry = django.dispatch.Signal()
 
 
 def store_audit_entry(sender, *args, **kwargs):
-    if 'user' in kwargs.keys():
+    if 'user' in kwargs:
         user = kwargs['user']
-    if 'ipaddress' in kwargs.keys():
+    if 'ipaddress' in kwargs:
         ipaddress = kwargs['ipaddress']
-    if 'action' in kwargs.keys():
+    if 'action' in kwargs:
         action = kwargs['action']
-    if 'instance' in kwargs.keys():
+    if 'instance' in kwargs:
         instance = kwargs['instance']
-    if 'cluster' in kwargs.keys():
+    if 'cluster' in kwargs:
         cluster = kwargs['cluster']
     auditlog = AuditEntry(
         requester=User.objects.get(pk=user),

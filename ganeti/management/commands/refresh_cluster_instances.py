@@ -33,7 +33,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         exit_code = 0
         for cluster in self.fetch_clusters(options.get("clusters")):
-            print("Refreshing cache for cluster: {0}".format(cluster))
+            print(("Refreshing cache for cluster: {0}".format(cluster)))
             try:
                 self.refresh(cluster, options.get("seconds"))
             except Exception as err:

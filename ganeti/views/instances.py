@@ -613,7 +613,7 @@ def instance(request, cluster_slug, instance):
                 "Setting %s" % (
                     ", ".join(
                         [
-                            "%s:%s" % (key, value) for key, value in data.iteritems()
+                            "%s:%s" % (key, value) for key, value in data.items()
                         ]
                     )
                 ),
@@ -676,7 +676,7 @@ def instance(request, cluster_slug, instance):
                 )
             )
     else:
-        if 'cdrom_image_path' in instance.hvparams.keys():
+        if 'cdrom_image_path' in instance.hvparams:
             if instance.hvparams['cdrom_image_path']:
                 instance.hvparams['cdrom_type'] = 'iso'
             else:

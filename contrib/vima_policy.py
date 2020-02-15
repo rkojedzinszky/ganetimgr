@@ -62,7 +62,7 @@ EXPIRATION_WARNING = "warn_6"
 DESTRUCTION_WARNING = "warn_9"
 
 IdleSbj = 'Ανενεργός Λογαριασμός στην υπηρεσία ViMa της ΕΔΕΤ'
-IdleMessage = u"""
+IdleMessage = """
 Λαμβάνετε αυτό το email γιατί ο λογαριασμός σας στην ViMa με username {username}
 εμφανίζεται ανενεργός από {last_login}.
 
@@ -86,7 +86,7 @@ web portal της ViMa (https://vima.grnet.gr) και κάντε login με το
 """
 
 WarnSbj = 'URGENT: Ανενεργός Λογαριασμός στην υπηρεσία ViMa της ΕΔΕΤ'
-WarnMessage = u"""
+WarnMessage = """
 Λαμβάνετε αυτό το email γιατι ο λογαριασμός σας στην ViMa με username {username}
 εμφανίζεται ανενεργός για περίοδο μεγαλύτερη των 6 μηνών. Σε συνέχεια της
 προηγούμενης ειδοποίησης που σας είχαμε στείλει, τα VMs
@@ -107,7 +107,7 @@ support@grnet.gr.
 
 
 ReactivateSubj = 'Ανανέωση tickets σχετικά με VMs της υπηρεσίας ViMa'
-ReactivateMessage = u"""
+ReactivateMessage = """
 Τα tickets σχετικά με τα ακόλουθα vms μπορούν να κλείσουν καθώς ένας από τους χρήστες 
 είναι πλέον ενεργός:
 
@@ -115,7 +115,7 @@ ReactivateMessage = u"""
 """
 
 ShutdownSubj = 'Άνοιγμα νέων tickets σχετικά με VMs της υπηρεσίας ViMa'
-ShutdownMessage = u"""
+ShutdownMessage = """
 Για τα ακόλουθα vms όλοι οι χρήστες πλέον θεωρούνται expired. Τα vms έγιναν 
 shutdown και θα πρέπει να ανοιχτούν αντίστοιχα tickets:
 
@@ -123,7 +123,7 @@ shutdown και θα πρέπει να ανοιχτούν αντίστοιχα t
 """
 
 DestroySubj = 'Ανανέωση tickets σχετικά με VMs της υπηρεσίας ViMa'
-DestroyMessage = u"""
+DestroyMessage = """
 Τα tickets σχετικά με τα ακόλουθα vms μπορούν να κλείσουν καθώς όλοι οι χρήστες πλέον 
 είναι ανενεργοί. Τα vms θα πρέπει να καταστραφούν: 
 
@@ -131,7 +131,7 @@ DestroyMessage = u"""
 """
 
 BrokenSbj = 'Ανενεργά URLs σε vms της υπηρεσίας ViMA'
-BrokenMessage = u"""
+BrokenMessage = """
 Αγαπητέ χρήστη της υπηρεσίας ViMA,
 
     Τα παρακάτω VM  σας χρησιμοποιούν ώς virtual cdrom, URLs τα οποία δεν ειναι
@@ -207,10 +207,10 @@ def check_broken_urls():
                 return True
 
     logging.info("#### Script is checking for Broken URLS")
-    broken = filter(lambda vm: has_broken_url(vm), Instance.objects.all())
+    broken = [vm for vm in Instance.objects.all() if has_broken_url(vm)]
 
     vms_per_user = defaultdict(list)
-    for users, instance in map(lambda vm: (find_vm_owner(vm), vm), broken):
+    for users, instance in [(find_vm_owner(vm), vm) for vm in broken]:
         for user in users:
             vms_per_user[user].append(instance)
 
@@ -218,10 +218,8 @@ def check_broken_urls():
 
 
 def send_broken_url_mails(user, vms):
-    urls = "\n".join(map(
-        lambda x: "\t{vm} cdrom url: {url}\n".format(
-            vm=x.name, url=x.hvparams['cdrom_image_path']),
-        vms))
+    urls = "\n".join(["\t{vm} cdrom url: {url}\n".format(
+            vm=x.name, url=x.hvparams['cdrom_image_path']) for x in vms])
 
     send_mail(BrokenSbj, BrokenMessage.format(info=urls),
               "noreply@grnet.gr", (user.email,))
@@ -247,9 +245,7 @@ def fetch_inactive_users():
 
     active_users = User.objects.filter(is_active=True)
 
-    return tuple(map(
-        lambda x: x(active_users),
-        (fetch_idle_users, fetch_expired_users, fetch_tbdestroyed_users)))
+    return tuple([x(active_users) for x in (fetch_idle_users, fetch_expired_users, fetch_tbdestroyed_users)])
 
 
 def categorize_inactive_users(inactive_users):
@@ -296,9 +292,7 @@ def notify_freshly_inactive(fresh_inactive):
                                  last_login=user.last_login.ctime()),
                   "noreply@grnet.gr", [user.email])
 
-    for username in chain(*map(
-            lambda x: fresh_inactive[x],
-            (WEEKLY_WARNING_1, WEEKLY_WARNING_2, WEEKLY_WARNING_3))):
+    for username in chain(*[fresh_inactive[x] for x in (WEEKLY_WARNING_1, WEEKLY_WARNING_2, WEEKLY_WARNING_3)]):
         notify(username, IdleSbj, IdleMessage)
 
     for username in fresh_inactive[EXPIRATION_WARNING]:
@@ -312,31 +306,27 @@ def activated_users(categorized_inactive):
 
 
 def fetch_filtered_vms(users, filter_func):
-    return filter(
-        lambda x: filter_func(x),
-        chain(*map(lambda username: user_groupped_instances[username], users)))
+    return [x for x in chain(*[user_groupped_instances[username] for username in users]) if filter_func(x)]
 
 
 def notify_internal(subject, message, vms):
     if vms:
         send_mail(subject,
                   message.format(vms="\n".join(
-                      map(lambda vm: vm.name, vms))),
+                      [vm.name for vm in vms])),
                   "noreply@grnet.gr",
                   ["support@grnet.gr"]
                   + [x[-1] for x in getattr(settings, "MANAGERS", [])])
 
 
 def should_activate(vm):
-    return any(filter(lambda t: t in vm.tags, [expired_tag, destroy_tag]))
+    return any([t for t in [expired_tag, destroy_tag] if t in vm.tags])
 
 
 def should_expire(vm, expired_users, expiration_tag=None):
-    return (all(map(lambda x: x.issubset(expired_users),
-                    (set(vm.users),
-                     set(chain(*map(lambda g: g.user_set.all(), vm.groups))))))
-            and not any(filter(lambda t: t in vm.tags,
-                               [exclude_tag, expiration_tag])))
+    return (all([x.issubset(expired_users) for x in (set(vm.users),
+                     set(chain(*[g.user_set.all() for g in vm.groups])))])
+            and not any([t for t in [exclude_tag, expiration_tag] if t in vm.tags]))
 
 
 def activate(vms):
@@ -369,8 +359,7 @@ def fetch_inactivity_actions(categorized_inactive):
     fresh_inactive = get_fresh_categorized_users(categorized_inactive)
 
     expired_users = set(
-        chain(*map(lambda group: categorized_inactive[group],
-                   [EXPIRATION_WARNING, DESTRUCTION_WARNING]))
+        chain(*[categorized_inactive[group] for group in [EXPIRATION_WARNING, DESTRUCTION_WARNING]])
     ).union(set(User.objects.filter(is_active=False)))
 
     return {
@@ -437,11 +426,11 @@ def main(dry_run=False, check_inactive=False, check_urls=False):
         logging.info(findings_msg())
 
     def report_actions():
-        print(findings_msg())
+        print((findings_msg()))
 
     def report_broken_urls():
-        print("VMs that have broken urls are the following (per user): {0}"
-              .format(broken_urls.items()))
+        print(("VMs that have broken urls are the following (per user): {0}"
+              .format(list(broken_urls.items()))))
 
     def notify_broken_urls():
         logging.info("Sending broken url emails")

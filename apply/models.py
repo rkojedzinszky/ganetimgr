@@ -49,7 +49,7 @@ from jsonfield import JSONField
  STATUS_FAILED,
  STATUS_SUCCESS,
  STATUS_REFUSED,
- STATUS_DISCARDED) = range(100, 108)
+ STATUS_DISCARDED) = list(range(100, 108))
 
 APPLICATION_CODES = (
     (STATUS_PENDING, "pending"),
@@ -184,7 +184,7 @@ class InstanceApplication(models.Model):
         if self.organization:
             tags.append("%s:org:%s" % (GANETI_TAG_PREFIX,
                                        self.organization.tag))
-        if 'vgs' in self.instance_params.keys():
+        if 'vgs' in self.instance_params:
             if self.instance_params['vgs'] != 'default':
                 tags.append("%s:vg:%s" % (
                     GANETI_TAG_PREFIX,
@@ -226,13 +226,13 @@ class InstanceApplication(models.Model):
                             "contents": ssh_base64,
                             "owner": owner,
                             "group": group,
-                            "mode": 0600,
+                            "mode": 0o600,
                         }
                     )
-        for (key, val) in osparams.iteritems():
+        for (key, val) in osparams.items():
             # Encode nested JSON. See
             # <https://code.google.com/p/ganeti/issues/detail?id=835>
-            if not isinstance(val, basestring):
+            if not isinstance(val, str):
                 osparams[key] = json.dumps(val)
         disk_template = self.instance_params['disk_template']
         nodes = None

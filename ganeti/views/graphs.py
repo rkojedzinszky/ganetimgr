@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
@@ -53,11 +53,11 @@ def graph(request, cluster_slug, instance, graph_type,
         )
         if nic and graph_type == "net-ts":
             url = "%s/%s" % (url, nic)
-        req = urllib2.Request(url)
-        response = urllib2.urlopen(req)
-    except urllib2.HTTPError:
+        req = urllib.request.Request(url)
+        response = urllib.request.urlopen(req)
+    except urllib.error.HTTPError:
         response = open(settings.NODATA_IMAGE, "r")
-    except urllib2.URLError:
+    except urllib.error.URLError:
         response = open(settings.NODATA_IMAGE, "r")
     except Exception:
         response = open(settings.NODATA_IMAGE, "r")

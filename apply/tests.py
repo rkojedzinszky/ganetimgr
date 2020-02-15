@@ -133,10 +133,10 @@ class ApplicationTestCase(TestCase):
         # initialize the form and add the extra data.
         form = form.__class__(data)
         self.assertEqual(form.is_valid(), False)
-        self.assertEqual('cluster' in form.errors.keys(), True)
-        self.assertEqual('netw' in form.errors.keys(), True)
-        self.assertEqual('node_group' in form.errors.keys(), True)
-        self.assertEqual('disk_template' in form.errors.keys(), True)
+        self.assertEqual('cluster' in form.errors, True)
+        self.assertEqual('netw' in form.errors, True)
+        self.assertEqual('node_group' in form.errors, True)
+        self.assertEqual('disk_template' in form.errors, True)
 
         # initialize the form and add the extra data.
         data['cluster'] = cluster.id
@@ -171,7 +171,7 @@ class ApplicationTestCase(TestCase):
         # make the request
         res = self.send_application_review(form.data, application)
         form = res.context['appform']
-        self.assertEqual('admin_comments' in form.errors.keys(), True)
+        self.assertEqual('admin_comments' in form.errors, True)
 
         # send the form properly
         form.data['admin_comments'] = 'test'
@@ -224,15 +224,15 @@ class ApplicationTestCase(TestCase):
             form.data
         )
         form = res.context['form']
-        self.assertEqual('hostname' in form.errors.keys(), True)
-        self.assertEqual('cluster' in form.errors.keys(), True)
-        self.assertEqual('netw' in form.errors.keys(), True)
-        self.assertEqual('disk_template' in form.errors.keys(), True)
-        self.assertEqual('node_group' in form.errors.keys(), True)
-        self.assertEqual('memory' in form.errors.keys(), True)
-        self.assertEqual('vcpus' in form.errors.keys(), True)
-        self.assertEqual('operating_system' in form.errors.keys(), True)
-        self.assertEqual('disk_size' in form.errors.keys(), True)
+        self.assertEqual('hostname' in form.errors, True)
+        self.assertEqual('cluster' in form.errors, True)
+        self.assertEqual('netw' in form.errors, True)
+        self.assertEqual('disk_template' in form.errors, True)
+        self.assertEqual('node_group' in form.errors, True)
+        self.assertEqual('memory' in form.errors, True)
+        self.assertEqual('vcpus' in form.errors, True)
+        self.assertEqual('operating_system' in form.errors, True)
+        self.assertEqual('disk_size' in form.errors, True)
         data = {
             'hostname': 'test.example.com',
             'cluster': cluster.pk,

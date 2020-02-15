@@ -74,7 +74,7 @@ def try_log(fn, *args, **kwargs):
     global logger
     try:
         fn(*args, **kwargs)
-    except StandardError as e:
+    except Exception as e:
         logger.error("%s: %s" % (fn.__name__, str(e)))
 
 
@@ -154,10 +154,10 @@ def handle_job_lock(job):
         logger.debug("Polling job %d" % job_id)
         try:
             status = cluster.get_job_status(job_id)
-        except Exception, err:
+        except Exception as err:
             logger.warn("Error polling job: %s" % str(err))
             close_old_connections()
-            sleep(pi.next())
+            sleep(next(pi))
             continue
         finally:
             close_old_connections()
@@ -178,7 +178,7 @@ def handle_job_lock(job):
                     locked_instances.pop("%s"%instance)
                 except KeyError:
                     pass
-                if len(locked_instances.items()) == 0:
+                if len(locked_instances) == 0:
                     cache.delete('locked_instances')
                 else:
                     cache.set('locked_instances', locked_instances, 90)
@@ -191,7 +191,7 @@ def handle_job_lock(job):
         # Touch the key
         cache.set(lock_key, reason, 30)
         job.touch()
-        sleep(pi.next())
+        sleep(next(pi))
 
 
 def handle_creation(job):
@@ -336,7 +336,7 @@ def main():
         # which opens a socket upon initialization time. Since we can't get the fd
         # reliably, We have to maintain all file descriptors open (which won't harm
         # anyway)
-        context = AllFilesDaemonContext(pidfile=pidf, umask=0022)
+        context = AllFilesDaemonContext(pidfile=pidf, umask=0o022)
         if opts.user:
             try:
                 context.uid = int(opts.user)

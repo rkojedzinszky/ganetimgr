@@ -16,7 +16,7 @@
 #
 
 from django.contrib import admin
-from models import AuditEntry
+from .models import AuditEntry
 
 
 class AuditEntryAdmin(admin.ModelAdmin):
