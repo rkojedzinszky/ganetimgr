@@ -34,7 +34,7 @@ from gevent import sleep, signal
 from gevent import reinit as gevent_reinit
 from gevent.pool import Pool
 
-import beanstalkc
+import greenstalk
 import os
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "ganetimgr.settings")
 from django.conf import settings
@@ -82,8 +82,8 @@ def monitor_jobs():
     # We have to open one socket per Greenlet, as currently socket sharing is
     # not allowed
     try:
-        b = beanstalkc.Connection()
-    except Exception, err:
+        b = greenstalk.Client()
+    except Exception as err:
         logger.error("Error connecting to beanstalkd: %s" % str(err))
         sleep(5)
         return

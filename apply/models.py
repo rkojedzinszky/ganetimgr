@@ -35,7 +35,7 @@ try:
 except ImportError:
     BEANSTALK_TUBE = None
 
-import beanstalkc
+import greenstalk
 from paramiko import RSAKey, DSSKey
 from binascii import hexlify
 
@@ -283,7 +283,7 @@ class InstanceApplication(models.Model):
         self.save()
         application_submitted.send(sender=self)
 
-        b = beanstalkc.Connection()
+        b = greenstalk.Client()
         if BEANSTALK_TUBE:
             b.use(BEANSTALK_TUBE)
         b.put(json.dumps({

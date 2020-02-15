@@ -60,7 +60,7 @@ if hasattr(settings, 'BEANSTALK_TUBE'):
 else:
     BEANSTALK_TUBE = None
 
-import beanstalkc
+import greenstalk
 
 import json
 
@@ -385,7 +385,7 @@ class Cluster(models.Model):
             b = None
             for i in range(5):
                 try:
-                    b = beanstalkc.Connection()
+                    b = greenstalk.Client()
                     break
                 except Exception:
                     sleep(1)
