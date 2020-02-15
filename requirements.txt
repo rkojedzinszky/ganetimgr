@@ -1,5 +1,5 @@
 ## dependencies for the ganetimgr project
-django==1.11
+django<2
 # we target the latest LTS release
 gevent
 # gevent is used to pool cluster RAPI communication
