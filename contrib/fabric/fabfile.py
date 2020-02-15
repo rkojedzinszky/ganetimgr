@@ -1,6 +1,5 @@
 # fab --fabfile=ganetimgr deploy:tag='v1.6' -H ganetimgr.vm.grnet.gr -u staurosk
 
-from __future__ import with_statement
 import os
 
 from fabric.api import run, cd, abort
