@@ -82,7 +82,7 @@ def monitor_jobs():
     # We have to open one socket per Greenlet, as currently socket sharing is
     # not allowed
     try:
-        b = greenstalk.Client()
+        b = greenstalk.Client(host=settings.BEANSTALKD_HOST, port=settings.BEANSTALKD_PORT)
     except Exception as err:
         logger.error("Error connecting to beanstalkd: %s" % str(err))
         sleep(5)

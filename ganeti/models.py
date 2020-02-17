@@ -386,7 +386,7 @@ class Cluster(models.Model):
             b = None
             for i in range(5):
                 try:
-                    b = greenstalk.Client()
+                    b = greenstalk.Client(host=settings.BEANSTALKD_HOST, port=settings.BEANSTALKD_PORT)
                     break
                 except Exception:
                     sleep(1)

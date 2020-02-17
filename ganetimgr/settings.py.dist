@@ -409,3 +409,11 @@ if SENTRY['activate']:
 #########################
 NORECAPTCHA_SITE_KEY = ''
 NORECAPTCHA_SECRET_KEY = ''
+
+#########################
+#                       #
+#      Beanstalkd       #
+#                       #
+#########################
+BEANSTALKD_HOST = 'localhost'
+BEANSTALKD_PORT = 11300
