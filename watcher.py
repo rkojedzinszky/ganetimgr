@@ -97,25 +97,25 @@ def monitor_jobs():
 
     while True:
         job = b.reserve()
-        stats = job.stats()
+        stats = b.stats_job(job)
 
         # Check for erratic jobs and bury them
         if stats["reserves"] > RESERVE_ERROR_THRESHOLD:
             logger.error("Job %d reserved %d (> %d) times, burying" %
-                         (job.jid, stats["reserves"], RESERVE_ERROR_THRESHOLD))
-            job.bury()
+                         (job.id, stats["reserves"], RESERVE_ERROR_THRESHOLD))
+            b.bury(job)
             continue
 
         try:
             data = json.loads(job.body)
         except ValueError:
             logger.error("Job %d has malformed body '%s', burying" %
-                         (job.jid, job.body))
-            job.bury()
+                         (job.id, job.body))
+            b.bury(job)
             continue
 
         if "type" in data and data["type"] in DISPATCH_TABLE:
-            DISPATCH_TABLE[data["type"]](job)
+            DISPATCH_TABLE[data["type"]](b, job)
 
 def clear_cluster_users_cache(cluster_slug):
     for user in User.objects.all():
@@ -123,7 +123,7 @@ def clear_cluster_users_cache(cluster_slug):
     cache.delete("cluster:%s:instances" % cluster_slug)
     close_old_connections()
 
-def handle_job_lock(job):
+def handle_job_lock(b: greenstalk.Client, job: greenstalk.Job):
     global logger
     data = json.loads(job.body)
     lock_key = data["lock_key"]
@@ -136,7 +136,7 @@ def handle_job_lock(job):
     except ObjectDoesNotExist:
         logger.warn("Got lock key %s for unknown cluster %s, burying" %
                      (data["lock_key"], data["cluster"]))
-        job.bury()
+        b.bury(job)
         close_old_connections()
         return
     finally:
@@ -148,7 +148,7 @@ def handle_job_lock(job):
         reason = cache.get(lock_key)
         if reason is None:
             logger.info("Lock key %s vanished, forgetting it" % lock_key)
-            job.delete()
+            b.delete(job)
             return
 
         logger.debug("Polling job %d" % job_id)
@@ -186,15 +186,15 @@ def handle_job_lock(job):
                 # This could be due to a cache fail or restart. For the time log it
                 logger.warn("Unable to find instance %s in locked instances cache key" %instance)
             clear_cluster_users_cache(cluster.slug)
-            job.delete()
+            b.delete(job)
             return
         # Touch the key
         cache.set(lock_key, reason, 30)
-        job.touch()
+        b.touch(job)
         sleep(next(pi))
 
 
-def handle_creation(job):
+def handle_creation(b: greenstalk.Client, job: greenstalk.Job):
     global logger
     data = json.loads(job.body)
 
@@ -203,10 +203,10 @@ def handle_creation(job):
     except ObjectDoesNotExist:
         logger.warn("Unable to find application #%d, burying" %
                      data["application_id"])
-        try_log(mail_admins, "Burying job #%d" % job.jid,
+        try_log(mail_admins, "Burying job #%d" % job.id,
                     "Please inspect job #%d (application %d) manually" %
-                    (job.jid, data["application_id"]))
-        job.bury()
+                    (job.id, data["application_id"]))
+        b.bury(job)
         close_old_connections()
         return
     finally:
@@ -262,10 +262,10 @@ def handle_creation(job):
                              application.hostname)
                 try_log(mail_managers, "Instance %s is ready" % application.hostname,
                               mail_body_managers)
-            job.delete()
+            b.delete(job)
             close_old_connections()
             break
-        job.touch()
+        b.delete(job)
 
 
 DISPATCH_TABLE = {
