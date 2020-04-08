@@ -30,7 +30,7 @@ class AuditEntry(models.Model):
     last_updated = models.DateTimeField(auto_now=True)
     is_authorized = models.BooleanField(default=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return "%s %s %s" % (self.requester, self.action, self.instance)
 
     def update(self, **kwargs):

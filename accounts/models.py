@@ -50,7 +50,7 @@ class UserProfile(models.Model):
                     return True
         return False
 
-    def __unicode__(self):
+    def __str__(self):
         return "%s profile" % self.user
 
 

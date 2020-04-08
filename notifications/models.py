@@ -10,7 +10,7 @@ class NotificationArchive(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     sender = models.ForeignKey(User, blank=True, null=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.subject
 
     def get_absolute_url(self):

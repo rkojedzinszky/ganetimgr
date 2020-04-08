@@ -89,7 +89,7 @@ class Organization(models.Model):
         verbose_name_plural = _("organizations")
         ordering = ["title"]
 
-    def __unicode__(self):
+    def __str__(self):
         return self.title
 
 
@@ -124,7 +124,7 @@ class InstanceApplication(models.Model):
             ("view_applications", "Can view all applications"),
         )
 
-    def __unicode__(self):
+    def __str__(self):
         return self.hostname
 
     @property
@@ -309,7 +309,7 @@ class SshPublicKey(models.Model):
     class Meta:
         ordering = ["fingerprint"]
 
-    def __unicode__(self):
+    def __str__(self):
         return "%s: %s" % (self.fingerprint, self.owner.username)
 
     def compute_fingerprint(self):

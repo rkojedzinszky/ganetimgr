@@ -270,7 +270,7 @@ class Instance(object):
     def __repr__(self):
         return "<Instance: '%s'>" % self.name
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     def get_lock_key(self):
@@ -363,7 +363,7 @@ class Cluster(models.Model):
             curl_config_fn=curl_conf
         )
 
-    def __unicode__(self):
+    def __str__(self):
         return self.hostname
 
     def _instance_cache_key(self, instance):
@@ -1095,7 +1095,7 @@ class Network(models.Model):
     ipv6_prefix = models.CharField(max_length=255, null=True, blank=True)
     groups = models.ManyToManyField(Group, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return "%s (%s)" % (self.description, self.cluster.slug)
 
     def save(self, *args, **kwargs):
