@@ -283,7 +283,7 @@ class InstanceApplication(models.Model):
         self.save()
         application_submitted.send(sender=self)
 
-        b = greenstalk.Client()
+        b = greenstalk.Client(host=settings.BEANSTALKD_HOST, port=settings.BEANSTALKD_PORT)
         if BEANSTALK_TUBE:
             b.use(BEANSTALK_TUBE)
         b.put(json.dumps({
