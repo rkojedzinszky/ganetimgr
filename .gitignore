@@ -11,3 +11,4 @@ analytics.html
 *.swp
 venv
 .vscode
+static
