@@ -376,7 +376,7 @@ class Cluster(models.Model):
         return "cluster:{0}:instance:{1}:lock".format(self.hostname, instance)
 
     def _lock_instance(self, instance, reason="locked",
-                       timeout=30, job_id=None):
+                       timeout=30, job_id=None, flush_keys=[]):
         lock_key = self._instance_lock_key(instance)
         cache.set(lock_key, reason, timeout)
         locked_instances = cache.get('locked_instances')
@@ -404,7 +404,7 @@ class Cluster(models.Model):
                 "instance": instance,
                 "job_id": job_id,
                 "lock_key": lock_key,
-                "flush_keys": [self._instance_cache_key(instance)]
+                "flush_keys": flush_keys + [self._instance_cache_key(instance)]
             }))
 
     @classmethod
@@ -1010,14 +1010,14 @@ class Cluster(models.Model):
         except Exception as e:
             return e
         else:
-            self._lock_instance(instance, reason="tagging", job_id=job_id)
+            self._lock_instance(instance, reason="tagging", job_id=job_id, flush_keys=[self._cluster_cache_key()])
             return job_id
 
     def untag_instance(self, instance, tags):
         cache_key = self._instance_cache_key(instance)
         cache.delete(cache_key)
         job_id = self._client.DeleteInstanceTags(instance, tags)
-        self._lock_instance(instance, reason="untagging", job_id=job_id)
+        self._lock_instance(instance, reason="untagging", job_id=job_id, flush_keys=[self._cluster_cache_key()])
         return job_id
 
     def migrate_instance(self, instance):
