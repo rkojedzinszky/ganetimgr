@@ -118,8 +118,6 @@ def monitor_jobs():
             DISPATCH_TABLE[data["type"]](b, job)
 
 def clear_cluster_users_cache(cluster_slug):
-    for user in User.objects.all():
-        cache.delete("user:%s:index:instances" %user.username)
     cache.delete("cluster:%s:instances" % cluster_slug)
     close_old_connections()
 

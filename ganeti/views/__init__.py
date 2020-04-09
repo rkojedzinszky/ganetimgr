@@ -95,7 +95,6 @@ def clear_cache(request):
             "cluster:*",
             "pendingapplications",
             "%s:ajax*" % username,
-            "user:%s:index:instances" % username,
             "user:%s:index:instance:light" % username,
             "user:%s:index:users:instance:stats" % username,
             '%s:ajaxapplist' % username,

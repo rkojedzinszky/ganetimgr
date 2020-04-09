@@ -149,13 +149,6 @@ def user_index_json(request):
             finally:
                 close_old_connections()
     jresp = {}
-    cache_key = "user:%s:index:instances" % request.user.username
-    if cluster_slug:
-        cache_key = "user:%s:%s:instances" % (
-            request.user.username,
-            cluster_slug
-        )
-    res = cache.get(cache_key)
     instancedetails = []
     j = Pool(80)
     locked_instances = cache.get('locked_instances')
@@ -176,71 +169,69 @@ def user_index_json(request):
                 bad_clusters.append((instance.cluster, e))
         finally:
             close_old_connections()
-    if res is None:
-        if not request.user.is_anonymous():
-            if cluster_slug:
-                clusters = Cluster.objects.filter(slug=cluster_slug)
-            else:
-                # get only enabled clusters
-                clusters = Cluster.objects.filter(disabled=False)
-            p.map(_get_instances, clusters)
-        cache_timeout = 900
-        if bad_clusters:
-            if request.user.is_superuser:
-                djmessages.add_message(
-                    request,
-                    msgs.WARNING,
-                    "Some instances may be missing because the"
-                    " following clusters are unreachable: %s"
-                    % (
-                        ", ".join(
-                            [
-                                "%s: %s" % (
-                                    c[0].slug or c[0].hostname,
-                                    c[1]
-                                ) for c in bad_clusters
-                            ]
-                        )
-                    )
-                )
-            else:
-                djmessages.add_message(
-                    request,
-                    msgs.WARNING,
-                    "Some instances may be missing because the"
-                    " following clusters are unreachable: %s"
-                    % (
-                        ", ".join(
-                            [c[0].description or c[0].hostname for c in bad_clusters]
-                        )
-                    )
-                )
-                pass
 
-            cache_timeout = 30
-        j.map(_get_instance_details, instances)
-        if locked_clusters:
+    if not request.user.is_anonymous():
+        if cluster_slug:
+            clusters = Cluster.objects.filter(slug=cluster_slug)
+        else:
+            # get only enabled clusters
+            clusters = Cluster.objects.filter(disabled=False)
+        p.map(_get_instances, clusters)
+    cache_timeout = 900
+    if bad_clusters:
+        if request.user.is_superuser:
             djmessages.add_message(
                 request,
                 msgs.WARNING,
-                'Some clusters are under maintenance: <br> %s' % ', '.join(locked_clusters)
+                "Some instances may be missing because the"
+                " following clusters are unreachable: %s"
+                % (
+                    ", ".join(
+                        [
+                            "%s: %s" % (
+                                c[0].slug or c[0].hostname,
+                                c[1]
+                            ) for c in bad_clusters
+                        ]
+                    )
+                )
             )
-        if bad_instances:
+        else:
             djmessages.add_message(
                 request,
                 msgs.WARNING,
-                "Could not get details for %s instances: %s. Please try again later." % (
-                    str(len(bad_instances)),
-                    ', '.join([i.name for i in bad_instances])
+                "Some instances may be missing because the"
+                " following clusters are unreachable: %s"
+                % (
+                    ", ".join(
+                        [c[0].description or c[0].hostname for c in bad_clusters]
+                    )
                 )
             )
-            cache_timeout = 30
+            pass
 
-        jresp['aaData'] = instancedetails
-        cache.set(cache_key, jresp, cache_timeout)
-        res = jresp
+        cache_timeout = 30
+    j.map(_get_instance_details, instances)
+    if locked_clusters:
+        djmessages.add_message(
+            request,
+            msgs.WARNING,
+            'Some clusters are under maintenance: <br> %s' % ', '.join(locked_clusters)
+        )
+    if bad_instances:
+        djmessages.add_message(
+            request,
+            msgs.WARNING,
+            "Could not get details for %s instances: %s. Please try again later." % (
+                str(len(bad_instances)),
+                ', '.join([i.name for i in bad_instances])
+            )
+        )
+        cache_timeout = 30
 
-    return HttpResponse(json.dumps(res), content_type='application/json')
+    jresp['aaData'] = instancedetails
+
+    return HttpResponse(json.dumps(jresp), content_type='application/json')
 
 
 @login_required

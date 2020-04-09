@@ -293,7 +293,6 @@ def generate_json_light(instance, user):
 
 
 def clear_cluster_user_cache(username, cluster_slug):
-    cache.delete("user:%s:index:instances" % username)
     cache.delete("cluster:%s:instances" % cluster_slug)
 
 
@@ -431,8 +430,6 @@ def get_os_details(img_id):
 
 def refresh_cluster_cache(cluster, instance):
     cluster.force_cluster_cache_refresh(instance)
-    for u in User.objects.all():
-        cache.delete("user:%s:index:instances" % u.username)
     nodes, bc, bn = prepare_clusternodes()
     cache.set('allclusternodes', nodes, 180)
     cache.set('badclusters', bc, 180)
