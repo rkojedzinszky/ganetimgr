@@ -1,7 +1,7 @@
 ## dependencies for the ganetimgr project
 django<2
 # we target the latest LTS release
-gevent==1.4.0
+gevent
 # gevent is used to pool cluster RAPI communication
 django-registration-redux==2.7
 # used for our registration workflow
