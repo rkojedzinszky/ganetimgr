@@ -366,6 +366,9 @@ class Cluster(models.Model):
     def __str__(self):
         return self.hostname
 
+    def _cluster_cache_key(self):
+        return "cluster:{0}:instances".format(self.hostname)
+
     def _instance_cache_key(self, instance):
         return "cluster:{0}:instance:{1}".format(self.hostname, instance)
 
@@ -450,12 +453,12 @@ class Cluster(models.Model):
                     'ctime',
                     'mtime'
                 ]))
-        cache.set("cluster:{0}:instances".format(self.hostname),
+        cache.set(self._cluster_cache_key(),
                   instances, seconds)
         return instances
 
     def get_client_struct_instances(self):
-        return (cache.get("cluster:{0}:instances".format(self.hostname))
+        return (cache.get(self._cluster_cache_key())
                 or self.refresh_instances())
 
     def get_instances(self):
@@ -1257,7 +1260,7 @@ class CustomPermission(models.Model):
 
     class Meta:
         managed = False
-    
+
         permissions = (
             ('view_all_graphs', 'Can view all graphs'),
             ("can_isolate", "Can Isolate"),
