@@ -31,6 +31,10 @@ from notifications.models import NotificationArchive
 from ganeti.utils import format_ganeti_api_error
 
 
+def _is_ajax(request) -> bool:
+    return request.headers.get('x-requested-with') == 'XMLHttpRequest'
+
+
 @login_required
 def notify(request, instance=None):
     if request.user.is_superuser or request.user.has_perm('ganeti.view_instances'):
@@ -56,7 +60,7 @@ def notify(request, instance=None):
                         email,
                         mail_list,
                     )
-                if request.is_ajax():
+                if _is_ajax(request):
                     ret = {'result': 'success'}
                     return HttpResponse(
                         json.dumps(ret),
@@ -84,7 +88,7 @@ def notify(request, instance=None):
                     groupd['type'] = "group"
                     users.append(groupd)
             form = MessageForm()
-        if request.is_ajax():
+        if _is_ajax(request):
             return render(
                 request,
                 'notifications/create_ajax.html',

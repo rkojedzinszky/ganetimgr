@@ -15,15 +15,15 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from django.conf.urls import  url
+from django.urls import re_path
 from apply import views
 
 urlpatterns = [
-    url(r'^apply/?$', views.apply, name="apply"),
-    url(r'^list/?$', views.application_list, name="application-list"),
+    re_path(r'^apply/?$', views.apply, name="apply"),
+    re_path(r'^list/?$', views.application_list, name="application-list"),
     # this url is accessible only if a superuser tries to create
     # an instance by himself
-    url(r'^save/', views.review_application, name="application-save"),
-    url(r'^(?P<application_id>\d+)/review/$', views.review_application, name="application-review"),
-    url(r'^(?P<application_id>\d+)/(?P<cookie>\w+)/ssh_keys', views.instance_ssh_keys, name="instance-ssh-keys"),
+    re_path(r'^save/', views.review_application, name="application-save"),
+    re_path(r'^(?P<application_id>\d+)/review/$', views.review_application, name="application-review"),
+    re_path(r'^(?P<application_id>\d+)/(?P<cookie>\w+)/ssh_keys', views.instance_ssh_keys, name="instance-ssh-keys"),
 ]

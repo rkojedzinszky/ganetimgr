@@ -3,11 +3,11 @@
 Instance: {{ instance.name }}<br>
 Cluster:{{ instance.cluster.description }}<br>
 Status:
-{% ifequal instance.admin_state instance.oper_state %}
+{% if instance.admin_state == instance.oper_state %}
 	{{ instance.admin_state|yesno:"Running,Stopped" }}
 {% else %}
 	{{ instance.oper_state|yesno:"Running,Stopped" }}, should be {{ instance.admin_state|yesno:"running,stopped" }}
-{% endifequal %}
+{% endif %}
 {% if instance.is_locked %}
 	(<em>{{ instance.is_locked }}</em>)
 {% endif %}<br>

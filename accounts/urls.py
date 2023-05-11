@@ -16,29 +16,29 @@
 #
 
 from accounts.forms import PasswordResetFormPatched
-from django.conf.urls import  url, include
+from django.urls import re_path, include
 from django.contrib.auth import views as auth_views
 from .views import CustomRegistrationView as RegistrationView
 
 
 urlpatterns = [
-    url(
+    re_path(
         r'^register/$',
         RegistrationView.as_view(),
         name='registration_register'
     ),
-    url(
+    re_path(
         r'^password/reset/$',
         auth_views.PasswordResetView.as_view(form_class=PasswordResetFormPatched),
         name='password_reset'
     ),
-    url(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
+    re_path(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
 	    auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
-    url(r'^reset/done/$', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
-    url(
+    re_path(r'^reset/done/$', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
+    re_path(
         r'^password_reset/done/$',
         auth_views.PasswordResetDoneView.as_view(),
         name='password_reset_done'
     ),
-    url(r'^', include('registration.backends.admin_approval.urls')),
+    re_path(r'^', include('registration.backends.admin_approval.urls')),
 ]

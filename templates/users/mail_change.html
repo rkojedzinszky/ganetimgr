@@ -71,11 +71,11 @@
                 {% trans "has successfully changed to" %}
             {% endif %}:
             <strong>
-                {% ifequal mail|length 0 %}
+                {% if mail|length == 0 %}
                     {% trans "you have not registered an address yet" %}
                 {% else %}
                     {{ mail }}
-                {% endifequal %}
+                {% endif %}
             </strong>
         </div>
         <form method="POST" id="change_email_form" class="form">

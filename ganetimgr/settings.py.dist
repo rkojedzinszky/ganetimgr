@@ -118,6 +118,7 @@ INSTALLED_APPS = (
     'django.contrib.flatpages',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'widget_tweaks',
     'registration',
     'accounts',
     'ganeti',
@@ -413,3 +414,6 @@ RECAPTCHA_SECRET_KEY = ''
 #########################
 BEANSTALKD_HOST = 'localhost'
 BEANSTALKD_PORT = 11300
+
+# Django 3.2+
+DEFAULT_AUTO_FIELD = "django.db.models.AutoField"

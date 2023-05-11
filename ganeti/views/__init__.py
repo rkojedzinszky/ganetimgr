@@ -39,7 +39,7 @@ from django.http import (
 )
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.messages import constants as msgs
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 
 MESSAGE_TAGS = {
     msgs.ERROR: '',

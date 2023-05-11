@@ -22,8 +22,8 @@ from paramiko import RSAKey, DSSKey, SSHException
 
 from django import forms
 from django.utils.safestring import mark_safe
-from django.utils.translation import ugettext as _
-from django.utils.translation import ugettext_lazy
+from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy
 from django.template.defaultfilters import filesizeformat
 
 from apply.models import *
@@ -31,7 +31,7 @@ from ganeti.models import Instance, Cluster
 from django.forms.models import ModelChoiceIterator, ModelChoiceField
 from itertools import groupby
 from django.forms.widgets import Select
-from django.utils.encoding import force_text
+from django.utils.encoding import force_str
 from django.utils.html import escape, conditional_escape
 from accounts.models import UserProfile
 from django.conf import settings
@@ -130,7 +130,7 @@ class SelectWithDisabled(Select):
     of the form: {'label': 'option label', 'disabled': True}
     """
     def render_option(self, selected_choices, option_value, option_label):
-        option_value = force_text(option_value)
+        option_value = force_str(option_value)
         if (option_value in selected_choices):
             selected_html = ' selected="selected"'
         else:
@@ -142,17 +142,17 @@ class SelectWithDisabled(Select):
             option_label = option_label['label']
         return '<option value="%s"%s%s>%s</option>' % (
             escape(option_value), selected_html, disabled_html,
-            conditional_escape(force_text(option_label)))
+            conditional_escape(force_str(option_label)))
 
 
 class InstanceForm(forms.ModelForm):
-    hostname = forms.CharField(help_text=ugettext_lazy(
+    hostname = forms.CharField(help_text=gettext_lazy(
         "A fully qualified domain name,"
         " e.g. host.domain.com"
-    ), label=ugettext_lazy("Hostname"))
+    ), label=gettext_lazy("Hostname"))
     memory = forms.ChoiceField(
         choices=MEMORY_CHOICES,
-        label=ugettext_lazy("Memory")
+        label=gettext_lazy("Memory")
     )
     vcpus = forms.ChoiceField(
         choices=[
@@ -164,23 +164,23 @@ class InstanceForm(forms.ModelForm):
         min_value=2,
         max_value=50,
         initial=5,
-        label=ugettext_lazy("Disk size (GB)"),
-        help_text=ugettext_lazy("Specify a size from 2 to 50 GB")
+        label=gettext_lazy("Disk size (GB)"),
+        help_text=gettext_lazy("Specify a size from 2 to 50 GB")
     )
     hosts_mail_server = forms.BooleanField(
         required=False,
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "Check this option if  the virtual machine will be sending e-mail"
         ),
-        label=ugettext_lazy("Hosts mail server")
+        label=gettext_lazy("Hosts mail server")
     )
     organization = forms.ModelChoiceField(
         queryset=Organization.objects.all(),
         required=False,
-        label=ugettext_lazy("Organization")
+        label=gettext_lazy("Organization")
     )
     operating_system = forms.CharField(
-        label=ugettext_lazy("Operating System"),
+        label=gettext_lazy("Operating System"),
         widget=forms.Select
     )
 
@@ -222,11 +222,11 @@ class InstanceApplicationForm(InstanceForm):
     comments = forms.CharField(
         widget=forms.Textarea,
         required=True,
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "Additional comments you would like"
             " the service administrators to see"
         ),
-        label=ugettext_lazy("Comments")
+        label=gettext_lazy("Comments")
     )
     accept_tos = forms.BooleanField()
 
@@ -286,7 +286,7 @@ class InstanceApplicationReviewForm(InstanceForm):
     memory = forms.IntegerField(min_value=min(VALID_MEMORY_VALUES), initial=1024)
     vcpus = forms.IntegerField(min_value=1, initial=1, label="Virtual CPUs")
     disk_size = forms.IntegerField(min_value=2, initial=5,
-                                   label=ugettext_lazy("Disk size (GB)"))
+                                   label=gettext_lazy("Disk size (GB)"))
     cluster = forms.ChoiceField(
         label="Cluster",
         required=False
@@ -459,8 +459,8 @@ class SshKeyForm(forms.Form):
 
 
 class EmailChangeForm(forms.Form):
-    email1 = forms.EmailField(label=ugettext_lazy("Email"), required=True)
-    email2 = forms.EmailField(label=ugettext_lazy("Email (verify)"), required=True)
+    email1 = forms.EmailField(label=gettext_lazy("Email"), required=True)
+    email2 = forms.EmailField(label=gettext_lazy("Email (verify)"), required=True)
 
     def clean(self):
         cleaned_data = self.cleaned_data
@@ -474,13 +474,13 @@ class EmailChangeForm(forms.Form):
 
 class NameChangeForm(forms.Form):
     name = forms.CharField(
-        label=ugettext_lazy("Name"),
+        label=gettext_lazy("Name"),
         max_length=50,
         min_length=2,
         required=True
     )
     surname = forms.CharField(
-        label=ugettext_lazy("Surname"),
+        label=gettext_lazy("Surname"),
         max_length=50,
         min_length=2,
         required=True

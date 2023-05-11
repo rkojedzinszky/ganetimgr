@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 from django import forms
-from django.utils.translation import ugettext_lazy
+from django.utils.translation import gettext_lazy
 from django.contrib.auth.models import User
 from notifications.models import NotificationArchive
 from notifications.utils import get_mails
@@ -33,16 +33,16 @@ TYPE_CHOICES = (
 
 class MessageForm(forms.Form):
     search_for = forms.ChoiceField(
-        label=ugettext_lazy("Search for"),
+        label=gettext_lazy("Search for"),
         choices=TYPE_CHOICES
     )
-    subject = forms.CharField(max_length=100, label=ugettext_lazy("Subject"))
+    subject = forms.CharField(max_length=100, label=gettext_lazy("Subject"))
     message = forms.CharField(
         widget=forms.Textarea,
-        label=ugettext_lazy("Body"),
+        label=gettext_lazy("Body"),
         help_text='You can use {% for i in instances %} {{ i }} {% endfor %} if you want to use the body as a mail template.'
     )
-    recipient_list = forms.CharField(label=ugettext_lazy("Recipients"))
+    recipient_list = forms.CharField(label=gettext_lazy("Recipients"))
 
     def add_to_archive(self, user):
         if self.is_valid():

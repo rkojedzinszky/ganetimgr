@@ -15,7 +15,7 @@ from django.db import close_old_connections
 from django.shortcuts import get_object_or_404
 from django.template.defaultfilters import filesizeformat
 from django.template.loader import render_to_string
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 from ganeti.models import Cluster, Instance, InstanceAction
 
 from util.client import GanetiApiError

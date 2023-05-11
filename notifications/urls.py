@@ -15,12 +15,12 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from django.conf.urls import  url
+from django.urls import re_path
 from notifications import views
 
 urlpatterns = [
-    url(r'^usergrps/$', views.get_user_group_list, name="usergroups"),
-    url(r'^(?P<instance>[^/]+)/$', views.notify, name="notify"),
-    url(r'^archive/(?P<notification>\w+)/$', views.archive, name="notification-details"),
-    url(r'^$', views.notify, name="notify"),
+    re_path(r'^usergrps/$', views.get_user_group_list, name="usergroups"),
+    re_path(r'^(?P<instance>[^/]+)/$', views.notify, name="notify"),
+    re_path(r'^archive/(?P<notification>\w+)/$', views.archive, name="notification-details"),
+    re_path(r'^$', views.notify, name="notify"),
 ]

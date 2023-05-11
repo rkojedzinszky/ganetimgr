@@ -20,7 +20,7 @@ from gevent.pool import Pool
 
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 from django.contrib.auth.decorators import user_passes_test
 from django.urls import reverse
 from django.contrib.messages import constants as msgs

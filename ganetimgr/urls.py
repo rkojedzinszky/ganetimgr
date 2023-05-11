@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 #>from django.conf.urls import patterns, include, url
-from django.conf.urls import include, url
+from django.urls import include, re_path
 from django.views.static import serve
 
 from django.conf import settings
@@ -34,43 +34,43 @@ from auditlog import urls as auditlog
 from django.views.i18n import set_language
 admin.autodiscover()
 
-urlpatterns = [ 
-    url(r'^setlang/?$', set_language, name='setlang'),
-    url(r'^$', user_index, name="user-instances"),
-    url(r'^news/?$', news, name="news"),
+urlpatterns = [
+    re_path(r'^setlang/?$', set_language, name='setlang'),
+    re_path(r'^$', user_index, name="user-instances"),
+    re_path(r'^news/?$', news, name="news"),
 
     # unique, helper urls
-    url(r'^clearcache/?$', clear_cache, name="clearcache"),
-    url(r'^get_messages/$', get_messages, name="get_messages"),
-    url(r'^operating_systems/$', discovery.get_operating_systems, name='operating_systems_json'),
-    url(r'^tagusergrps/?$', get_user_groups, name="tagusergroups"),
+    re_path(r'^clearcache/?$', clear_cache, name="clearcache"),
+    re_path(r'^get_messages/$', get_messages, name="get_messages"),
+    re_path(r'^operating_systems/$', discovery.get_operating_systems, name='operating_systems_json'),
+    re_path(r'^tagusergrps/?$', get_user_groups, name="tagusergroups"),
 
     # mount apps
-    url(r'^application/', include(application)),
-    url(r'^history/', include(auditlog)),
-    url(r'^nodegroups/', include(nodegroup)),
-    url(r'^notifications/', include(notifications)),
-    url(r'^user/', include(user)),
-    url(r'^stats/', include(stats_urls)),
-    url(r'^jobs/', include(jobs)),
-    url(r'^cluster/', include(clusters)),
-    url(r'^instances/', include(instances)),
-    url(r'^accounts/', include(accounts)),
-    url(r'^graph/', include(graphs)),
+    re_path(r'^application/', include(application)),
+    re_path(r'^history/', include(auditlog)),
+    re_path(r'^nodegroups/', include(nodegroup)),
+    re_path(r'^notifications/', include(notifications)),
+    re_path(r'^user/', include(user)),
+    re_path(r'^stats/', include(stats_urls)),
+    re_path(r'^jobs/', include(jobs)),
+    re_path(r'^cluster/', include(clusters)),
+    re_path(r'^instances/', include(instances)),
+    re_path(r'^accounts/', include(accounts)),
+    re_path(r'^graph/', include(graphs)),
     # get a list of the available operating systems
-    url(r'^admin/', admin.site.urls),
+    re_path(r'^admin/', admin.site.urls),
 ]
 
 # oauth
 if 'oauth2_provider' in settings.INSTALLED_APPS:
     urlpatterns += [
-        url(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
+        re_path(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
 
     ]
 
 if settings.DEBUG:
     urlpatterns += [
-        url(r'^static/(?P<path>.*)', serve,
+        re_path(r'^static/(?P<path>.*)', serve,
             {'document_root':  settings.STATIC_URL}),
     ]
 

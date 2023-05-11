@@ -14,12 +14,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-from ganeti.decorators import ajax_required
 from django.http import HttpResponse
 from ganeti.utils import operating_systems
 
 
-@ajax_required
 def get_operating_systems(request):
     return HttpResponse(operating_systems())
 

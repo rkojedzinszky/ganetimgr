@@ -64,11 +64,11 @@
             {% trans "was successfully changed" %}
         {% endif %}:
         <strong>
-            {% ifequal name|length 0 %}
+            {% if name|length == 0 %}
                 {% trans "we don't know your name yet" %}
             {% else %}
                 {{ name }}
-            {% endifequal %}
+            {% endif %}
         </strong>
     </div>
     <form method="POST" id="change_name_form" class="form">

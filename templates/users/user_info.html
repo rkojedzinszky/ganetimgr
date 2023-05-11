@@ -267,21 +267,21 @@
 {% endblock %}
 
 {% block title %}
-	{% ifequal type 'user' %}
+	{% if type == 'user' %}
 		{% trans "User Information" %}
-	{% endifequal %}
-	{% ifequal type 'group' %}
+	{% endif %}
+	{% if type == 'group' %}
 		{% trans "Group Information" %}
-	{% endifequal %}
+	{% endif %}
 {% endblock %}
 
 {% block crumbs %}
 	<li><a href="{% url 'user-instances' %}">{% trans "Home" %}</a><span class="divider">/</span></li>
-	<li class="active">{% ifequal type 'user' %}
+	<li class="active">{% if type == 'user' %}
 		{% trans "User Information" %}
-	{% endifequal %}{% ifequal type 'group' %}
+	{% endif %}{% == ifequal type 'group' %}
 		{% trans "Group Information" %}
-	{% endifequal %}
+	{% endif %}
 	</li>
 {% endblock %}
 
@@ -289,34 +289,34 @@
 	<div class="span12 main-content">
 	    <div class="row-fluid">
     	    <div class="row-fluid">
-			{% ifequal type 'user' %}
+			{% if type == 'user' %}
 				<h2>{% trans "User Information" %}: {{usergroup}}</h2>
-			{% endifequal %}
-			{% ifequal type 'group' %}
+			{% endif %}
+			{% if type == 'group' %}
 				<h2>{% trans "Group Information" %}: {{usergroup}}</h2>
-			{% endifequal %}
+			{% endif %}
 			<table width="100%" id="usergroup_instance_table" class="table table-first-column-number data-table display full">
 				<thead>
 					<tr>
-						{% ifequal type 'user' %}
+						{% if type == 'user' %}
 						<th style="text-align: center;">{% trans "Username" %}</th>
 						<th>{% trans "First Name" %}</th>
 						<th>{% trans "Last Name" %}</th>
 						<th>{% trans "E-mail" %}</th>
 						<th>{% trans "Is Active" %}</th>
 						<th style="text-align: center;">{% trans "Groups" %}</th>
-						{% endifequal %}
-						{% ifequal type 'group' %}
+						{% endif %}
+						{% if type == 'group' %}
 						<th style="text-align: center;">{% trans "Group Name" %}</th>
 						<th>{% trans "Username" %}</th>
 						<th>{% trans "First Name" %}</th>
 						<th>{% trans "Last Name" %}</th>
 						<th>{% trans "E-mail" %}</th>
-						{% endifequal %}
+						{% endif %}
 					</tr>
 				</thead>
 				<tbody>
-				{% ifequal type 'user' %}
+				{% if type == 'user' %}
 					<tr class="GradeA">
 						<td style="text-align: center;">{{usergroup.username}}</td>
 						<td>{{usergroup.first_name}}</td>
@@ -329,8 +329,8 @@
 							{% endfor %}
 						</td>
 					</tr>
-				{% endifequal %}
-				{% ifequal type 'group' %}
+				{% endif %}
+				{% if type == 'group' %}
 					{% for user in usergroup.user_set.all %}
 					<tr class="GradeA">
 						<td style="text-align: center;">{{usergroup.name}}</td>
@@ -340,7 +340,7 @@
 						<td><a href="mailto:{{user.email}}">{{user.email}}</a></td>
 					</tr>
 					{% endfor %}
-				{% endifequal %}
+				{% endif %}
 				</tbody>
 			</table>
 		</div>

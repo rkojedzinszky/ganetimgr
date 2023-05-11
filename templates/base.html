@@ -118,9 +118,9 @@
                                 <i class="fa fa-globe" aria-hidden="true"></i>
                                 {% trans "Language" %}:
                                 {% for lang in LANGUAGES %}
-                                    {% ifequal LANGUAGE_CODE lang.0 %}
+                                    {% if LANGUAGE_CODE == lang.0 %}
                                         {% trans lang.1 %}
-                                    {% endifequal %}
+                                    {% endif %}
                                 {% endfor %}
                                 <i class="fa fa-caret-down"></i>
                             </a>
@@ -132,7 +132,7 @@
                             </form>
                             {% for lang in LANGUAGES %}
                             <li>
-                                <a class="select_lang" href="#" onclick="setlang('{{ lang.0 }}'); return false;" title="{{lang.1}}">{% trans lang.1 %}{% ifequal LANGUAGE_CODE lang.0 %}  <i class="fa fa-check-square-o"></i>{% endifequal %}</a>
+                                <a class="select_lang" href="#" onclick="setlang('{{ lang.0 }}'); return false;" title="{{lang.1}}">{% trans lang.1 %}{% if LANGUAGE_CODE == lang.0 %}  <i class="fa fa-check-square-o"></i>{% endif %}</a>
                             </li>
                           {% endfor %}
                         </ul>

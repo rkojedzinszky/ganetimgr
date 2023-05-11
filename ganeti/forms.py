@@ -20,8 +20,8 @@ import urllib.request, urllib.error, urllib.parse
 
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
-from django.utils.translation import ugettext as _
-from django.utils.translation import ugettext_lazy
+from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy
 from django.utils.safestring import mark_safe
 from django.conf import settings
 from ganeti.models import Instance, Cluster
@@ -40,7 +40,7 @@ class PickyAuthenticationForm(AuthenticationForm):
 
 
 class tagsForm(forms.Form):
-    tags = forms.CharField(required=False, help_text=ugettext_lazy(
+    tags = forms.CharField(required=False, help_text=gettext_lazy(
         "Type a username or group name"
     ))
 
@@ -55,10 +55,10 @@ class isolateForm(forms.Form):
 
 class InstanceRenameForm(forms.Form):
     hostname = forms.CharField(
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "A fully qualified domain name, e.g. host.domain.com"
         ),
-        label=ugettext_lazy("Hostname")
+        label=gettext_lazy("Hostname")
     )
 
     def clean_hostname(self):
@@ -96,32 +96,32 @@ class GraphForm(forms.Form):
 
 
 class InstanceConfigForm(forms.Form):
-    nic_type = forms.ChoiceField(label=ugettext_lazy("Network adapter model"),
+    nic_type = forms.ChoiceField(label=gettext_lazy("Network adapter model"),
                                  choices=(('paravirtual', 'Paravirtualized'),
                                           ('rtl8139', 'Realtek 8139+'),
                                           ('e1000', 'Intel PRO/1000'),
                                           ('ne2k_pci', 'NE2000 PCI')))
 
-    disk_type = forms.ChoiceField(label=ugettext_lazy("Hard disk type"),
+    disk_type = forms.ChoiceField(label=gettext_lazy("Hard disk type"),
                                   choices=(('paravirtual', 'Paravirtualized'),
                                            ('scsi', 'SCSI'),
                                            ('ide', 'IDE')))
 
-    boot_order = forms.ChoiceField(label=ugettext_lazy("Boot device"),
+    boot_order = forms.ChoiceField(label=gettext_lazy("Boot device"),
                                    choices=(('disk', 'Hard disk'),
                                             ('cdrom', 'CDROM')))
 
-    cdrom_type = forms.ChoiceField(label=ugettext_lazy("CD-ROM Drive"),
+    cdrom_type = forms.ChoiceField(label=gettext_lazy("CD-ROM Drive"),
                                    choices=(('none', 'Disabled'),
                                             ('iso',
                                              'ISO Image over HTTP (see below)')),
                                    widget=forms.widgets.RadioSelect())
 
     cdrom_image_path = forms.CharField(required=False,
-                                       label=ugettext_lazy("ISO Image URL (http)"))
+                                       label=gettext_lazy("ISO Image URL (http)"))
 
     use_localtime = forms.BooleanField(
-        label=ugettext_lazy(
+        label=gettext_lazy(
             "Hardware clock uses local time"
             " instead of UTC"
         ),
@@ -129,7 +129,7 @@ class InstanceConfigForm(forms.Form):
     )
     whitelist_ip = forms.CharField(
         required=False,
-        label=ugettext_lazy("Allow From"),
+        label=gettext_lazy("Allow From"),
         help_text="If isolated, allow access from v4/v6 address/network"
     )
 

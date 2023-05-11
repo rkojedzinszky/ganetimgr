@@ -32,7 +32,7 @@ from django.core.cache import cache
 from django.contrib.auth.models import User, Group
 from django.contrib.sites.models import Site
 from django.template.loader import render_to_string
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django.core.exceptions import MultipleObjectsReturned, ObjectDoesNotExist
 from django.conf import settings
 from util import vapclient

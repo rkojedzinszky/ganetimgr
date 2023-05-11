@@ -28,7 +28,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import Http404
 from django.template.loader import render_to_string, get_template
 from django.template.context import RequestContext
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django.template import RequestContext
 
 from django.http import (

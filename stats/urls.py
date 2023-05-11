@@ -15,12 +15,12 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from django.conf.urls import  url
+from django.urls import re_path
 from stats import views
 
 urlpatterns = [
-    url(r'^applications/?', views.stats_ajax_applications, name="stats_ajax_apps"),
-    url(r'^instances/?', views.stats_ajax_instances, name="stats_ajax_instances"),
-    url(r'^vms_cluster/(?P<cluster_slug>[^/]+)/?', views.stats_ajax_vms_per_cluster, name="stats_ajax_vms_pc"),
-    url(r'^$', views.stats, name="stats"),
+    re_path(r'^applications/?', views.stats_ajax_applications, name="stats_ajax_apps"),
+    re_path(r'^instances/?', views.stats_ajax_instances, name="stats_ajax_instances"),
+    re_path(r'^vms_cluster/(?P<cluster_slug>[^/]+)/?', views.stats_ajax_vms_per_cluster, name="stats_ajax_vms_pc"),
+    re_path(r'^$', views.stats, name="stats"),
 ]
