@@ -6,7 +6,7 @@ gevent
 # gevent is used to pool cluster RAPI communication
 django-registration-redux==2.12
 # used for our registration workflow
-paramiko==3.1.0
+paramiko
 # used for user SSH key management
 python-daemon==3.0.1
 # used by watcher
@@ -16,18 +16,18 @@ pycurl
 # depenency for ganeti client library
 django-recaptcha
 # used in the registration form
-ipaddr==2.2.0
+ipaddr
 # used to calculate Instance ipv6addresses
-beautifulsoup4==4.8.2
+beautifulsoup4
 # used by the image autodiscovery mechanism
-requests==2.22.0
+requests
 # used by the image autodiscovery mechanism
 greenstalk==1.0.1
 # used to pass messages between watcher and django
 django-redis-cache==2.1.0
 # used to cache cluster nodes/instances info
-pyyaml==5.3
+pyyaml
 # used by beanstalkc
 # needed for rkojedzinszky/go-novncauthproxy proxy
 jwcrypto==0.6.0
-simplejson==3.17.0
+simplejson
