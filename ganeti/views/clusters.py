@@ -271,11 +271,11 @@ def reinstalldestreview(request, application_hash, action_id):
     cluster = action.cluster
     if not request.user.userprofile.is_owner(cluster.get_instance(instance)):
         action = ''
-        if action_id is 1:
+        if action_id == 1:
             action = 'reinstall'
-        elif action_id is 3:
+        elif action_id == 3:
             action = 'rename'
-        elif action_id is 2:
+        elif action_id == 2:
             action = 'destroy'
         auditlog_entry(request, 'Unauthorized ' + action + ' attempt',
                        instance, cluster.slug, True, False)
