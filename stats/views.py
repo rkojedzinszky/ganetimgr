@@ -26,7 +26,7 @@ from django.core.cache import cache
 from django.db import close_old_connections
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 from ganeti.models import Cluster
 from apply.models import InstanceApplication, Organization
@@ -45,7 +45,7 @@ def instance_owners(request):
                 instancesall.extend(cluster.get_user_instances(request.user))
             except (GanetiApiError, Exception):
                 bad_clusters.append(cluster)
-        if not request.user.is_anonymous():
+        if not request.user.is_anonymous:
             p.map(_get_instances, Cluster.objects.all())
         instances = [i for i in instancesall if i.users]
 
@@ -181,7 +181,7 @@ def stats(request):
                     exclude_pks.append(cluster.pk)
                 finally:
                     close_old_connections()
-            if not request.user.is_anonymous():
+            if not request.user.is_anonymous:
                 p.map(_get_instances, clusters)
             instances = len(instances)
             cache.set('leninstances', instances, 90)

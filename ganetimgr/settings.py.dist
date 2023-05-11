@@ -85,7 +85,7 @@ TEMPLATES = [{
 }]
 
 
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -322,7 +322,7 @@ DATABASES = {
         'PASSWORD': '',          # Not used with sqlite3.
         'HOST': '',             # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '',             # Set to empty string for default. Not used with sqlite3.
-        'OPTIONS': { 'init_command': 'SET default_storage_engine=INNODB', }
+        #'OPTIONS': { 'init_command': 'SET default_storage_engine=INNODB', }
     }
 }
 
@@ -340,7 +340,7 @@ if 'oauth2_provider' in INSTALLED_APPS and 'corsheaders' in INSTALLED_APPS:
         'CLIENT_ID_GENERATOR_CLASS': 'oauth2_provider.generators.ClientIdGenerator',
     }
     CORS_ORIGIN_ALLOW_ALL = True
-    MIDDLEWARE_CLASSES += ('corsheaders.middleware.CorsMiddleware',)
+    MIDDLEWARE += ('corsheaders.middleware.CorsMiddleware',)
 
 #########################
 #                       #

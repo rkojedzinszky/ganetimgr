@@ -23,7 +23,7 @@ class Migration(migrations.Migration):
                 ('recorded', models.DateTimeField(auto_now_add=True)),
                 ('last_updated', models.DateTimeField(auto_now=True)),
                 ('is_authorized', models.BooleanField(default=True)),
-                ('requester', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
+                ('requester', models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)),
             ],
         ),
     ]

@@ -58,7 +58,7 @@ urlpatterns = [
     url(r'^accounts/', include(accounts)),
     url(r'^graph/', include(graphs)),
     # get a list of the available operating systems
-    url(r'^admin/', include(admin.site.urls)),
+    url(r'^admin/', admin.site.urls),
 ]
 
 # oauth

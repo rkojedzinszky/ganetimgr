@@ -22,7 +22,7 @@ from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext as _
 from django.contrib.auth.decorators import user_passes_test
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.contrib.messages import constants as msgs
 from django.contrib import messages
 from django.contrib.auth.models import User

@@ -19,9 +19,15 @@ from django.contrib.auth import logout
 
 
 class ForceLogoutMiddleware(object):
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        return self.get_response(request)
+
     def process_request(self, request):
         if (
-            request.user.is_authenticated() and
+            request.user.is_authenticated and
             request.user.userprofile.force_logout_date and
             (
                 'LAST_LOGIN_DATE' not in request.session or

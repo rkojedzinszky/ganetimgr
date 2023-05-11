@@ -29,19 +29,15 @@ urlpatterns = [
     ),
     url(
         r'^password/reset/$',
-        auth_views.password_reset,
-        {
-            'password_reset_form':
-            PasswordResetFormPatched,
-        },
+        auth_views.PasswordResetView.as_view(form_class=PasswordResetFormPatched),
         name='password_reset'
     ),
     url(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
-	    auth_views.password_reset_confirm, name='password_reset_confirm'),
-    url(r'^reset/done/$', auth_views.password_reset_complete, name='password_reset_complete'),
+	    auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    url(r'^reset/done/$', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
     url(
         r'^password_reset/done/$',
-        auth_views.password_reset_done,
+        auth_views.PasswordResetDoneView.as_view(),
         name='password_reset_done'
     ),
     url(r'^', include('registration.backends.admin_approval.urls')),

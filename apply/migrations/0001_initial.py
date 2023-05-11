@@ -35,7 +35,7 @@ class Migration(migrations.Migration):
                 ('cookie', models.CharField(default=apply.models.generate_cookie, max_length=255, editable=False)),
                 ('filed', models.DateTimeField(auto_now_add=True)),
                 ('last_updated', models.DateTimeField(auto_now=True)),
-                ('applicant', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
+                ('applicant', models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)),
             ],
             options={
                 'permissions': (('view_applications', 'Can view all applications'),),
@@ -66,7 +66,7 @@ class Migration(migrations.Migration):
                 ('key', models.TextField()),
                 ('comment', models.CharField(max_length=255, null=True, blank=True)),
                 ('fingerprint', models.CharField(max_length=255, null=True, blank=True)),
-                ('owner', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
+                ('owner', models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)),
             ],
             options={
                 'ordering': ['fingerprint'],
@@ -75,11 +75,11 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='instanceapplication',
             name='organization',
-            field=models.ForeignKey(blank=True, to='apply.Organization', null=True),
+            field=models.ForeignKey(blank=True, to='apply.Organization', null=True, on_delete=models.DO_NOTHING),
         ),
         migrations.AddField(
             model_name='instanceapplication',
             name='reviewer',
-            field=models.ForeignKey(related_name='application_reviewer', default=None, blank=True, to=settings.AUTH_USER_MODEL, null=True),
+            field=models.ForeignKey(related_name='application_reviewer', default=None, blank=True, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.DO_NOTHING),
         ),
     ]

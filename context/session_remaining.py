@@ -22,7 +22,7 @@ import datetime
 def seconds(request):
     remaining = False
     if (
-        request.user.is_authenticated() and
+        request.user.is_authenticated and
         request.user.userprofile.force_logout_date and
         (
             'LAST_LOGIN_DATE' not in request.session or
@@ -30,7 +30,7 @@ def seconds(request):
         )
     ):
         remaining = 2
-    if not request.user.is_anonymous():
+    if not request.user.is_anonymous:
         if 'LAST_LOGIN_DATE' in request.session:
             last_login = request.session['LAST_LOGIN_DATE']
             now = datetime.datetime.now()

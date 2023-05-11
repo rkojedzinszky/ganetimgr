@@ -6,7 +6,7 @@ import json
 from gevent.pool import Pool
 
 from django.conf import settings
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.core.cache import cache
 from django.core.mail import send_mail
 from django.contrib.sites.models import Site

@@ -21,7 +21,7 @@ import pprint
 from gevent.pool import Pool
 
 from django.contrib.auth.decorators import login_required
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.contrib import messages as djmessages
 from django.db import close_old_connections
 from django.http import HttpResponseRedirect, HttpResponse, Http404
@@ -81,7 +81,7 @@ def jobs_index_json(request):
                 bad_clusters.append((cluster, e))
             finally:
                 close_old_connections()
-        if not request.user.is_anonymous():
+        if not request.user.is_anonymous:
             # get only enabled clusters
             clusters = Cluster.objects.filter(disabled=False)
             if cluster_slug:

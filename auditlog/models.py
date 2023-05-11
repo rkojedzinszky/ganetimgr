@@ -20,7 +20,7 @@ from django.contrib.auth.models import User
 
 
 class AuditEntry(models.Model):
-    requester = models.ForeignKey(User)
+    requester = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     ipaddress = models.CharField(max_length=255, null=True, blank=True)
     action = models.CharField(max_length=255)
     instance = models.CharField(max_length=255)

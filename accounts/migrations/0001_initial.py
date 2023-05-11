@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='CustomRegistrationProfile',
             fields=[
-                ('registrationprofile_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='registration.RegistrationProfile')),
+                ('registrationprofile_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='registration.RegistrationProfile', on_delete=models.DO_NOTHING)),
                 ('admin_activation_key', models.CharField(max_length=40, verbose_name='admin activation key')),
                 ('validated', models.BooleanField(default=False)),
             ],
@@ -33,8 +33,8 @@ class Migration(migrations.Migration):
                 ('first_login', models.BooleanField(default=True)),
                 ('force_logout_date', models.DateTimeField(null=True, blank=True)),
                 ('telephone', models.CharField(max_length=13, null=True, blank=True)),
-                ('organization', models.ForeignKey(blank=True, to='apply.Organization', null=True)),
-                ('user', models.OneToOneField(to=settings.AUTH_USER_MODEL)),
+                ('organization', models.ForeignKey(blank=True, to='apply.Organization', null=True, on_delete=models.DO_NOTHING)),
+                ('user', models.OneToOneField(to=settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)),
             ],
         ),
     ]

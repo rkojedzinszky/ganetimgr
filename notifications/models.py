@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 
 class NotificationArchive(models.Model):
@@ -8,7 +8,7 @@ class NotificationArchive(models.Model):
     subject = models.CharField(max_length=255)
     message = models.TextField()
     date = models.DateTimeField(auto_now_add=True)
-    sender = models.ForeignKey(User, blank=True, null=True)
+    sender = models.ForeignKey(User, blank=True, null=True, on_delete=models.DO_NOTHING)
 
     def __str__(self):
         return self.subject

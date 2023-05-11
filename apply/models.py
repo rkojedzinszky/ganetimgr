@@ -21,7 +21,7 @@ import base64
 
 import django.dispatch
 from django.db import models
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
 from django.utils.translation import ugettext_lazy as _
@@ -105,9 +105,9 @@ class InstanceApplication(models.Model):
     admin_contact_name = models.CharField(max_length=255, null=True, blank=True)
     admin_contact_phone = models.CharField(max_length=64, null=True, blank=True)
     admin_contact_email = models.EmailField(null=True, blank=True)
-    organization = models.ForeignKey(Organization, null=True, blank=True)
+    organization = models.ForeignKey(Organization, null=True, blank=True, on_delete=models.DO_NOTHING)
     instance_params = JSONField(blank=True, null=True)
-    applicant = models.ForeignKey(User)
+    applicant = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     job_id = models.IntegerField(null=True, blank=True)
     status = models.IntegerField(choices=APPLICATION_CODES)
     backend_message = models.TextField(blank=True, null=True)
@@ -117,6 +117,7 @@ class InstanceApplication(models.Model):
     last_updated = models.DateTimeField(auto_now=True)
     reviewer = models.ForeignKey(
         User, null=True, blank=True, default=None,
+        on_delete=models.DO_NOTHING,
         related_name='application_reviewer')
 
     class Meta:
@@ -303,7 +304,7 @@ class SshPublicKey(models.Model):
     key_type = models.CharField(max_length=12)
     key = models.TextField()
     comment = models.CharField(max_length=255, null=True, blank=True)
-    owner = models.ForeignKey(User)
+    owner = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     fingerprint = models.CharField(max_length=255, null=True, blank=True)
 
     class Meta:

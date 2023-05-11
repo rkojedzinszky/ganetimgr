@@ -21,7 +21,7 @@ from gevent.pool import Pool
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.messages import constants as msgs
 from django.contrib import messages as djmessages
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.core.cache import cache
 from django.conf import settings
 from django.db import close_old_connections
@@ -67,7 +67,7 @@ from ganeti.decorators import (
 
 
 def user_index(request):
-    if request.user.is_anonymous():
+    if request.user.is_anonymous:
         return HttpResponseRedirect(reverse('login'))
 
     return render(
@@ -120,7 +120,7 @@ else:
 @login_required
 def user_index_json(request):
     cluster_slug = request.GET.get('cluster', None)
-    if request.user.is_anonymous():
+    if request.user.is_anonymous:
         action = {
             'error': _(
                 "Permissions' violation. This action has been logged"
@@ -170,7 +170,7 @@ def user_index_json(request):
         finally:
             close_old_connections()
 
-    if not request.user.is_anonymous():
+    if not request.user.is_anonymous:
         if cluster_slug:
             clusters = Cluster.objects.filter(slug=cluster_slug)
         else:
@@ -236,7 +236,7 @@ def user_index_json(request):
 
 @login_required
 def user_sum_stats(request):
-    if request.user.is_anonymous():
+    if request.user.is_anonymous:
         action = {
             'error': _(
                 "Permissions' violation. This action has been"
@@ -258,7 +258,7 @@ def user_sum_stats(request):
 
         finally:
             close_old_connections()
-    if not request.user.is_anonymous():
+    if not request.user.is_anonymous:
         # get only enabled clusters
         p.map(_get_instances, Cluster.objects.filter(disabled=False))
 

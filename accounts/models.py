@@ -31,10 +31,10 @@ except ImportError:
 
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(User)
+    user = models.OneToOneField(User, on_delete=models.DO_NOTHING)
     first_login = models.BooleanField(default=True)
     force_logout_date = models.DateTimeField(null=True, blank=True)
-    organization = models.ForeignKey(Organization, blank=True, null=True)
+    organization = models.ForeignKey(Organization, blank=True, null=True, on_delete=models.DO_NOTHING)
     telephone = models.CharField(max_length=13, blank=True, null=True)
 
     def force_logout(self):

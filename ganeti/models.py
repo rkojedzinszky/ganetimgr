@@ -1089,7 +1089,7 @@ class Cluster(models.Model):
 
 class Network(models.Model):
     description = models.CharField(max_length=255)
-    cluster = models.ForeignKey(Cluster)
+    cluster = models.ForeignKey(Cluster, on_delete=models.DO_NOTHING)
     link = models.CharField(max_length=255)
     mode = models.CharField(max_length=64,
                             choices=(("bridged", "Bridged"),
@@ -1205,9 +1205,9 @@ class InstanceActionManager(models.Manager):
 
 
 class InstanceAction(models.Model):
-    applicant = models.ForeignKey(User)
+    applicant = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     instance = models.CharField(max_length=255, blank=True)
-    cluster = models.ForeignKey(Cluster, null=True, blank=True)
+    cluster = models.ForeignKey(Cluster, null=True, blank=True, on_delete=models.DO_NOTHING)
     action = models.IntegerField(choices=REQUEST_ACTIONS)
     action_value = models.CharField(max_length=255, null=True)
     activation_key = models.CharField(max_length=40)

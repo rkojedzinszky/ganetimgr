@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
                 ('message', models.TextField()),
                 ('date', models.DateTimeField(auto_now_add=True)),
                 ('recipients', models.ManyToManyField(related_name='notifications', to=settings.AUTH_USER_MODEL)),
-                ('sender', models.ForeignKey(blank=True, to=settings.AUTH_USER_MODEL, null=True)),
+                ('sender', models.ForeignKey(blank=True, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.DO_NOTHING)),
             ],
             options={
                 'ordering': ['-date'],

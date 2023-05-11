@@ -21,7 +21,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.sites.models import Site
 from django.contrib import messages
 from django.conf import settings
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.core.cache import cache
 from django.core.mail import send_mail, mail_managers
 from django.shortcuts import render, get_object_or_404

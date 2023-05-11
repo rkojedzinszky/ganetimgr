@@ -62,7 +62,7 @@ def news(request):
 
 
 def get_messages(request):
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         mes = {
             'messages': [
                 {

@@ -17,7 +17,7 @@
 
 from django.contrib import messages
 from django.utils.translation import ugettext as _
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.utils.safestring import mark_safe
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -28,12 +28,17 @@ class UserMessageMiddleware(object):
     """
     Middleware to display various messages to the users.
     """
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        return self.get_response(request)
 
     def process_request(self, request):
         if not hasattr(request, "session"):
             return
 
-        if request.user.is_authenticated():
+        if request.user.is_authenticated:
             try:
                 first_login = request.session["first_login"]
             except KeyError:
