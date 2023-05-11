@@ -3,11 +3,11 @@ django<4
 # we target the latest LTS release
 gevent
 # gevent is used to pool cluster RAPI communication
-django-registration-redux==2.7
+django-registration-redux==2.12
 # used for our registration workflow
-paramiko==2.7.1
+paramiko==3.1.0
 # used for user SSH key management
-python-daemon==2.2.4
+python-daemon==3.0.1
 # used by watcher
 setproctitle
 # used by watcher to set it's process name
