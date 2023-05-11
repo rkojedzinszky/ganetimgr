@@ -66,10 +66,10 @@ There is no official Debian package for registration-redux, so for this package
 you will need to use pip to install it.
 
 We removed some libraries from the repository. You need to manually install
-jsonfield and beanstalkc.
+beanstalkc.
 
-    apt-get install python-django-jsonfield python-beanstalkc
-    
+    apt-get install python-beanstalkc
+
 Django 1.7 introduced a build in migration mechanism, so we no longer use South.
 
     apt-get remove python-django-south

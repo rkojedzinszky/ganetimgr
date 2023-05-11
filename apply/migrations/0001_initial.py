@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from django.db import models, migrations
-import jsonfield.fields
 from django.conf import settings
 import apply.models
 
@@ -28,7 +27,7 @@ class Migration(migrations.Migration):
                 ('admin_contact_name', models.CharField(max_length=255, null=True, blank=True)),
                 ('admin_contact_phone', models.CharField(max_length=64, null=True, blank=True)),
                 ('admin_contact_email', models.EmailField(max_length=254, null=True, blank=True)),
-                ('instance_params', jsonfield.fields.JSONField(null=True, blank=True)),
+                ('instance_params', models.JSONField(null=True, blank=True)),
                 ('job_id', models.IntegerField(null=True, blank=True)),
                 ('status', models.IntegerField(choices=[(100, b'pending'), (101, b'approved'), (102, b'submitted'), (103, b'processing'), (104, b'failed'), (105, b'created successfully'), (106, b'refused'), (107, b'discarded')])),
                 ('backend_message', models.TextField(null=True, blank=True)),

@@ -39,9 +39,6 @@ import greenstalk
 from paramiko import RSAKey, DSSKey
 from binascii import hexlify
 
-#  from ganeti.fields.jsonfield import JSONField
-from jsonfield import JSONField
-
 (STATUS_PENDING,
  STATUS_APPROVED,
  STATUS_SUBMITTED,
@@ -106,7 +103,7 @@ class InstanceApplication(models.Model):
     admin_contact_phone = models.CharField(max_length=64, null=True, blank=True)
     admin_contact_email = models.EmailField(null=True, blank=True)
     organization = models.ForeignKey(Organization, null=True, blank=True, on_delete=models.DO_NOTHING)
-    instance_params = JSONField(blank=True, null=True)
+    instance_params = models.JSONField(blank=True, null=True)
     applicant = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     job_id = models.IntegerField(null=True, blank=True)
     status = models.IntegerField(choices=APPLICATION_CODES)

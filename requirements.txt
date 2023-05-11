@@ -1,5 +1,5 @@
 ## dependencies for the ganetimgr project
-django<3
+django<4
 # we target the latest LTS release
 gevent
 # gevent is used to pool cluster RAPI communication
@@ -27,7 +27,6 @@ django-redis-cache==2.1.0
 # used to cache cluster nodes/instances info
 pyyaml==5.3
 # used by beanstalkc
-django-jsonfield==1.0.1
 # needed for rkojedzinszky/go-novncauthproxy proxy
 jwcrypto==0.6.0
 simplejson==3.17.0
