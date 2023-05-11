@@ -127,7 +127,7 @@ INSTALLED_APPS = (
     'auditlog',
 #    'oauth2_provider',
 #    'corsheaders',
-    'nocaptcha_recaptcha'
+    'captcha'
 )
 
 # Caching is a vital part of ganetimgr.
@@ -403,8 +403,8 @@ if SENTRY['activate']:
 #      Recaptcha        #
 #                       #
 #########################
-NORECAPTCHA_SITE_KEY = ''
-NORECAPTCHA_SECRET_KEY = ''
+RECAPTCHA_SITE_KEY = ''
+RECAPTCHA_SECRET_KEY = ''
 
 #########################
 #                       #
