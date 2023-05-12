@@ -48,7 +48,7 @@ from django.contrib.sites.models import Site
 from django.contrib.auth.models import User
 from django.utils.encoding import smart_str
 from django.core.mail import mail_admins, mail_managers, send_mail
-from django.core import urlresolvers
+from django import urls
 from django.template.loader import render_to_string
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import close_old_connections
@@ -238,7 +238,7 @@ def handle_creation(b: greenstalk.Client, job: greenstalk.Job):
 
                 fqdn = Site.objects.get_current().domain
                 instance_url = "https://%s%s" % \
-                               (fqdn, urlresolvers.reverse("instance-detail",
+                               (fqdn, urls.reverse("instance-detail",
                                                 args=(application.cluster.slug,
                                                       application.hostname)))
                 mail_body = render_to_string("instances/emails/instance_created_mail.txt",
