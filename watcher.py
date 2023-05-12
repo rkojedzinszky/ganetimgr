@@ -306,8 +306,8 @@ class AllFilesDaemonContext(daemon.DaemonContext):
         return All()
 
 
-def fatal_signal_handler(signame):
-    logger.info("Caught %s, exiting" % signame)
+def fatal_signal_handler(signum, frame):
+    logger.info("Caught %s, exiting" % signum)
     raise SystemExit
 
 
@@ -377,8 +377,8 @@ def main():
             sys.exit(1)
         atexit.register(pidf.__exit__)
 
-    signal(SIGINT, fatal_signal_handler, "SIGINT")
-    signal(SIGTERM, fatal_signal_handler, "SIGTERM")
+    signal.signal(SIGINT, fatal_signal_handler)
+    signal.signal(SIGTERM, fatal_signal_handler)
 
     # Set the process title
     setproctitle.setproctitle(sys.argv[0])
