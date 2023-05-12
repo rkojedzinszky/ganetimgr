@@ -68,9 +68,9 @@ if 'oauth2_provider' in settings.INSTALLED_APPS:
 
     ]
 
-if settings.DEBUG:
-    urlpatterns += [
-        re_path(r'^static/(?P<path>.*)', serve,
-            {'document_root':  settings.STATIC_URL}),
-    ]
-
+# Always serve static files.
+# This may be handy in small installations where performance is not a concern
+urlpatterns += [
+    re_path(r'^{}(?P<path>.*)'.format(settings.STATIC_URL.lstrip("/")), serve,
+        {'document_root':  settings.STATIC_ROOT}),
+]
