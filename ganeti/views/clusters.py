@@ -195,6 +195,7 @@ def get_clusternodes_pjax(request):
                 ", ".join(bad_nodes)
             )
             cache.set('badnodes', bad_nodes, 180)
+        servermon_url = ""
         if settings.SERVER_MONITORING_URL:
             servermon_url = settings.SERVER_MONITORING_URL
         status_dict = {}
