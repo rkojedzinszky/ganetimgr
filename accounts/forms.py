@@ -17,6 +17,7 @@
 from django import forms
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.forms import PasswordResetForm
+from django.conf import settings
 from registration.forms import RegistrationFormUniqueEmail as _RegistrationForm
 from apply.models import Organization
 from captcha.fields import ReCaptchaField
@@ -31,7 +32,8 @@ class RegistrationForm(_RegistrationForm):
         required=False,
         label=_("Organization")
     )
-    recaptcha = ReCaptchaField()
+    if settings.RECAPTCHA_PRIVATE_KEY and settings.RECAPTCHA_PUBLIC_KEY:
+        recaptcha = ReCaptchaField()
 
 
 class PasswordResetFormPatched(PasswordResetForm):
