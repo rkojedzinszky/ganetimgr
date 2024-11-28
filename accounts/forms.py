@@ -20,7 +20,7 @@ from django.contrib.auth.forms import PasswordResetForm
 from django.conf import settings
 from registration.forms import RegistrationFormUniqueEmail as _RegistrationForm
 from apply.models import Organization
-from captcha.fields import ReCaptchaField
+from django_recaptcha.fields import ReCaptchaField
 
 
 class RegistrationForm(_RegistrationForm):

@@ -14,7 +14,7 @@ setproctitle
 # used by watcher to set it's process name
 pycurl
 # depenency for ganeti client library
-django-recaptcha
+django-recaptcha>=4
 # used in the registration form
 ipaddr
 # used to calculate Instance ipv6addresses
