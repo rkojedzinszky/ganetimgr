@@ -844,7 +844,7 @@ class Cluster(models.Model):
         }
 
         key = jwk.JWK(kty="oct", k=settings.NOVNC_JWE_SECRET)
-        token = jwt.JWT(claims=claims, header={"alg":"A256KW", "enc":"A256CBC-HS512"})
+        token = jwt.JWT(claims=claims, header={"alg": "dir", "enc": "A256GCM"})
         token.make_encrypted_token(key)
 
         host, port = settings.NOVNC_PROXY.split(':')
